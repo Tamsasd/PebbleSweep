@@ -195,8 +195,8 @@ public class PebbleSweepStateTest {
     void testEquals() {
         assertEquals(state1, state1);
         assertEquals(state1, new PebbleSweepState());
-        assertNotEquals(null, state1);
-        assertNotEquals("asd", state1);
+        assertFalse(state1.equals("asd"));
+        assertFalse(state1.equals(null));
         assertNotEquals(state1, state2);
         assertNotEquals(state1, state3);
         PebbleSweepState sameBoardDifferentPlayer = new PebbleSweepState(
