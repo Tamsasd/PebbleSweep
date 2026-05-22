@@ -19,7 +19,7 @@ public class ConsoleMain {
 
     public static Position parseMove(String s) {
         s = s.trim();
-        if (!s.matches("\\d\\s\\d")) {
+        if (!s.matches("[0-3]\\s+[0-3]")) {
             Logger.warn("Invalid format! Please provide two numbers in the following format: 'row column' with numbers [0,3] (e.g. '2 3')");
             throw new IllegalArgumentException("Invalid format! Please provide two numbers in the following format: 'row column' with numbers [0,3] (e.g. '2 3')");
         }
