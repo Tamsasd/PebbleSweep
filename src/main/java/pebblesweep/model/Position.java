@@ -1,4 +1,4 @@
 package pebblesweep.model;
 
-public record Position(short row, short column) {
+public record Position(int row, int column) {
 }

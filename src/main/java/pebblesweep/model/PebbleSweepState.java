@@ -171,7 +171,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
      */
     private boolean hasGap(TwoPhaseMove<Position> move) {
         if (isInSameColumn(move)) {
-            short col = move.from().column();
+            int col = move.from().column();
             int startRow = Math.min(move.from().row(), move.to().row());
             int endRow = Math.max(move.from().row(), move.to().row());
             for (int row = startRow; row <= endRow; row++) {
@@ -180,7 +180,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
             return false;
         }
         else {
-            short row = move.from().row();
+            int row = move.from().row();
             int startCol = Math.min(move.from().column(), move.to().column());
             int endCol = Math.max(move.from().column(), move.to().column());
             for (int col = startCol; col <= endCol; col++) {
@@ -212,7 +212,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     @Override
     public void makeMove(TwoPhaseMove<Position> move) {
         if (isInSameColumn(move)) {
-            short col = move.from().column();
+            int col = move.from().column();
             int startRow = Math.min(move.from().row(), move.to().row());
             int endRow = Math.max(move.from().row(), move.to().row());
             for (int row = startRow; row <= endRow; row++) {
@@ -220,7 +220,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
             }
         }
         else {
-            short row = move.from().row();
+            int row = move.from().row();
             int startCol = Math.min(move.from().column(), move.to().column());
             int endCol = Math.max(move.from().column(), move.to().column());
             for (int col = startCol; col <= endCol; col++) {
@@ -237,13 +237,13 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
      * @param row the index of the row to check for legal moves
      * @return a {@code Set} containing all valid horizontal moves in the specified row
      */
-    private Set<TwoPhaseMove<Position>> getLegalMovesInRow(short row) {
+    private Set<TwoPhaseMove<Position>> getLegalMovesInRow(int row) {
         Set<TwoPhaseMove<Position>> legalMoves = new java.util.HashSet<>();
 
-        for (short startCol = 0; startCol < numberOfColumns; startCol++) {
+        for (int startCol = 0; startCol < numberOfColumns; startCol++) {
             if (!BOARD[row][startCol]) continue;
 
-            for (short endCol = startCol; endCol < numberOfColumns; endCol++) {
+            for (int endCol = startCol; endCol < numberOfColumns; endCol++) {
                 if (!BOARD[row][endCol]) break;
 
                 Position from = new Position(row, startCol);
@@ -265,13 +265,13 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
      * @param col the index of the column to check for legal moves
      * @return a {@code Set} containing all valid vertical moves in the specified column
      */
-    private Set<TwoPhaseMove<Position>> getLegalMovesInColumn(short col) {
+    private Set<TwoPhaseMove<Position>> getLegalMovesInColumn(int col) {
         Set<TwoPhaseMove<Position>> legalMoves = new java.util.HashSet<>();
 
-        for (short startRow = 0; startRow < numberOfRows; startRow++) {
+        for (int startRow = 0; startRow < numberOfRows; startRow++) {
             if (!BOARD[startRow][col]) continue;
 
-            for (short endRow = startRow; endRow < numberOfRows; endRow++) {
+            for (int endRow = startRow; endRow < numberOfRows; endRow++) {
                 if (!BOARD[endRow][col]) break;
 
                 Position from = new Position(startRow, col);
@@ -294,11 +294,11 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     public Set<TwoPhaseMove<Position>> getLegalMoves() {
         Set<TwoPhaseMove<Position>> legalMoves = new java.util.HashSet<>();
 
-        for (short row = 0; row < numberOfRows; row++) {
+        for (int row = 0; row < numberOfRows; row++) {
             legalMoves.addAll(getLegalMovesInRow(row));
         }
 
-        for (short col = 0; col < numberOfColumns; col++) {
+        for (int col = 0; col < numberOfColumns; col++) {
             legalMoves.addAll(getLegalMovesInColumn(col));
         }
 
