@@ -220,22 +220,28 @@ public class PebbleSweepStateTest {
     @Test
     void testToString() {
         var str1 = """
-                O O O O
-                O O O O
-                O O O O
-                O O O O
+                    1 2 3 4
+                ___________
+                1 | O O O O
+                2 | O O O O
+                3 | O O O O
+                4 | O O O O
                 """;
         var str2 = """
-                · · · ·
-                · · · ·
-                · · · ·
-                · · · ·
+                    1 2 3 4
+                ___________
+                1 | . . . .
+                2 | . . . .
+                3 | . . . .
+                4 | . . . .
                 """;
         var str3 = """
-                O · · ·
-                · · O O
-                · · · ·
-                O · O ·
+                    1 2 3 4
+                ___________
+                1 | O . . .
+                2 | . . O O
+                3 | . . . .
+                4 | O . O .
                 """;
 
         assertEquals(str1, state1.toString());

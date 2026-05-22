@@ -352,13 +352,17 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     /**
      * Returns a string representation of the board state.
      * Pebbles are represented by 'O', and empty spaces by '·'.
+     * Visual numbering starts from 1 for easier understanding.
      *
      * @return a formatted string representing the current state of the board
      */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+        sb.append("    1 2 3 4\n");
+        sb.append("___________\n");
         for (int row = 0; row < numberOfRows; row++) {
+            sb.append(row+1 + " | ");
             for (int col = 0; col < numberOfColumns-1; col++) {
                 sb.append(BOARD[row][col] ? "O " : ". ");
             }
