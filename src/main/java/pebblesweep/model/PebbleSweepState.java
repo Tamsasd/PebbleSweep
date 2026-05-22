@@ -220,8 +220,8 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     @Override
     public void makeMove(TwoPhaseMove<Position> move) throws IllegalArgumentException{
         if (!isLegalMove(move)) {
-            Logger.warn("Attempted illegal move: {}", move);
-            throw new IllegalArgumentException("Cannot make illegal move: " + move);
+            Logger.warn("Attempted illegal move: {}", moveToString(move));
+            throw new IllegalArgumentException("Cannot make illegal move: " + moveToString(move));
         }
 
         if (isInSameColumn(move)) {
@@ -241,7 +241,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
             }
         }
 
-        Logger.trace("Player {} executed move {}", this.player, move);
+        Logger.trace("Player {} executed move {}", this.player, moveToString(move));
         this.player = this.player.opponent();
     }
 
@@ -368,6 +368,14 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
             }
             sb.append(BOARD[row][numberOfColumns-1] ? "O\n" : ".\n");
         }
+        return sb.toString();
+    }
+
+    private String moveToString(TwoPhaseMove<Position> move) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("({}, {})", move.from().row(), move.from().column());
+        sb.append(" --> ");
+        sb.append("({}, {})", move.to().row(), move.to().column());
         return sb.toString();
     }
 }
