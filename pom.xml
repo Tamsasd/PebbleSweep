@@ -7,11 +7,22 @@
     <groupId>hu.unideb.inf</groupId>
     <artifactId>PebbleSweep</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <description>Pebble Sweep two player game</description>
+    <developers>
+        <developer>
+            <name>Tamas Horneczki</name>
+            <email>horneczki.tamas@mailbox.unideb.hu</email>
+            <organization>Faculty of Informatics, University of Debrecen</organization>
+            <organizationUrl>https://inf.unideb.hu/</organizationUrl>
+        </developer>
+    </developers>
 
     <properties>
         <maven.compiler.source>25</maven.compiler.source>
         <maven.compiler.target>25</maven.compiler.target>
+        <maven.compiler.release>25</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <exec.mainClass>pebblesweep.gui.Main</exec.mainClass>
     </properties>
 
 </project>
