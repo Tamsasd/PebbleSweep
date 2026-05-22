@@ -5,6 +5,7 @@ import game.State;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,6 +15,7 @@ public class PebbleSweepStateTest {
     private PebbleSweepState state1;
     private PebbleSweepState state2;
     private PebbleSweepState state3;
+    private PebbleSweepState state4;
 
     @BeforeEach
     void setUp() {
@@ -25,7 +27,7 @@ public class PebbleSweepStateTest {
                 {false, false, false, false},
                 {false, false, false, false}
         };
-        state2 = new PebbleSweepState(state2Board, State.Player.PLAYER_1); // finish state
+        state2 = new PebbleSweepState(state2Board, State.Player.PLAYER_1); // finish state (player 1 wins)
 
         boolean[][] state3Board = {
                 {true, false, false, false},
@@ -34,6 +36,9 @@ public class PebbleSweepStateTest {
                 {true, false, true, false}
         };
         state3 = new PebbleSweepState(state3Board, State.Player.PLAYER_2); // intermediate state
+
+        boolean[][] state4Board = new boolean[4][4]; // finish state (player 2 wins)
+        state4 = new PebbleSweepState(state4Board, State.Player.PLAYER_2);
     }
     @Test
     void testIsLegalToMoveFrom_state1() {
@@ -88,6 +93,7 @@ public class PebbleSweepStateTest {
         assertEquals(State.Status.PLAYER_1_WINS, state2.getStatus());
         assertNotEquals(State.Status.PLAYER_2_WINS, state2.getStatus());
         assertEquals(State.Status.IN_PROGRESS, state3.getStatus());
+        assertEquals(State.Status.PLAYER_2_WINS, state4.getStatus());
     }
 
     @Test
@@ -100,6 +106,9 @@ public class PebbleSweepStateTest {
 
         assertFalse(state3.isWinner(State.Player.PLAYER_1));
         assertFalse(state3.isWinner(State.Player.PLAYER_2));
+
+        assertFalse(state4.isWinner(State.Player.PLAYER_1));
+        assertTrue(state4.isWinner(State.Player.PLAYER_2));
     }
 
     @Test
@@ -176,6 +185,16 @@ public class PebbleSweepStateTest {
         assertNotEquals("asd", state1);
         assertNotEquals(state1, state2);
         assertNotEquals(state1, state3);
+        PebbleSweepState sameBoardDifferentPlayer = new PebbleSweepState(
+                new boolean[][]{
+                        {true, true, true, true},
+                        {true, true, true, true},
+                        {true, true, true, true},
+                        {true, true, true, true}
+                },
+                State.Player.PLAYER_2
+        );
+        assertNotEquals(state1, sameBoardDifferentPlayer);
     }
 
     @Test
@@ -211,5 +230,24 @@ public class PebbleSweepStateTest {
         assertNotEquals(str3, state1.toString());
         assertNotEquals("asd", state1.toString());
         assertNotEquals(null, state1.toString());
+    }
+
+    @Test
+    void testDistanceLimitWithLargeBoard() {
+        boolean[][] largeBoard = {
+                {true, true, true, true, true},
+                {true, true, true, true, true},
+                {true, true, true, true, true},
+                {true, true, true, true, true},
+                {true, true, true, true, true},
+        };
+
+        PebbleSweepState largeState = new PebbleSweepState(largeBoard, State.Player.PLAYER_1);
+
+        Position pos1 = new Position(0, 0);
+        Position pos2 = new Position(4, 0); // this is 5 pebbles
+        TwoPhaseMoveState.TwoPhaseMove<Position> tooLongMove = new TwoPhaseMoveState.TwoPhaseMove<>(pos1, pos2);
+
+        assertFalse(largeState.isLegalMove(tooLongMove)); // by the rules, we can only sweep a maximum of 4 pebbles
     }
 }
