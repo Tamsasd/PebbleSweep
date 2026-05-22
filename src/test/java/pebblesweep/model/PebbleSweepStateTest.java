@@ -5,6 +5,8 @@ import game.State;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Set;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PebbleSweepStateTest {
@@ -139,5 +141,64 @@ public class PebbleSweepStateTest {
         assertFalse(state1.isLegalMove(move1));
         assertFalse(state1.isLegalMove(move3));
         assertFalse(state1.isLegalMove(move4));
+    }
+
+    @Test
+    void testGetLegalMoves() {
+        assertEquals(112, (long) state1.getLegalMoves().size());
+        assertEquals(Set.of(), state2.getLegalMoves());
+        assertEquals(7, (long) state3.getLegalMoves().size());
+    }
+
+    @Test
+    void copy() {
+        var copy = state1.copy();
+        assertEquals(state1, copy);
+        assertNotSame(state1, copy);
+    }
+
+    @Test
+    void testEquals() {
+        assertEquals(state1, state1);
+        assertEquals(state1, new PebbleSweepState());
+        assertNotEquals(null, state1);
+        assertNotEquals("asd", state1);
+        assertNotEquals(state1, state2);
+        assertNotEquals(state1, state3);
+    }
+
+    @Test
+    void testHashCode() {
+        assertEquals(state1.hashCode(), state1.hashCode());
+        assertEquals(state1.hashCode(), state1.copy().hashCode());
+    }
+
+    @Test
+    void testToString() {
+        var str1 = """
+                O O O O
+                O O O O
+                O O O O
+                O O O O
+                """;
+        var str2 = """
+                · · · ·
+                · · · ·
+                · · · ·
+                · · · ·
+                """;
+        var str3 = """
+                O · · ·
+                · · O O
+                · · · ·
+                O · O ·
+                """;
+
+        assertEquals(str1, state1.toString());
+        assertEquals(str2, state2.toString());
+        assertEquals(str3, state3.toString());
+        assertNotEquals(str3, state1.toString());
+        assertNotEquals("asd", state1.toString());
+        assertNotEquals(null, state1.toString());
     }
 }

@@ -345,10 +345,10 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (int row = 0; row < numberOfRows; row++) {
-            for (int col = 0; col < numberOfColumns; col++) {
+            for (int col = 0; col < numberOfColumns-1; col++) {
                 sb.append(BOARD[row][col] ? "O " : "· ");
             }
-            sb.append("\n");
+            sb.append(BOARD[row][numberOfColumns-1] ? "O\n" : "·\n");
         }
         return sb.toString();
     }
