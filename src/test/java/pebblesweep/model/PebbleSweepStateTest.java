@@ -135,21 +135,35 @@ public class PebbleSweepStateTest {
     }
 
     @Test
-    void testMakeMove() {
+    void testMakeMove_column() {
         Position pos1 = new Position(0,0);
         Position pos2 = new Position(3,0);
-        Position pos4 = new Position(3,2);
+        Position pos3 = new Position(1, 0);
 
-        TwoPhaseMoveState.TwoPhaseMove<Position> move1 = new TwoPhaseMoveState.TwoPhaseMove<>(pos1, pos2);
-        TwoPhaseMoveState.TwoPhaseMove<Position> move3 = new TwoPhaseMoveState.TwoPhaseMove<>(pos2, pos4);
-        TwoPhaseMoveState.TwoPhaseMove<Position> move4 = new TwoPhaseMoveState.TwoPhaseMove<>(pos1, pos1);
+        TwoPhaseMoveState.TwoPhaseMove<Position> move = new TwoPhaseMoveState.TwoPhaseMove<>(pos1, pos2);
 
-        state1.makeMove(move1);
+        state1.makeMove(move);
 
+        assertFalse(state1.isLegalToMoveFrom(pos1));
+        assertFalse(state1.isLegalToMoveFrom(pos2));
+        assertFalse(state1.isLegalToMoveFrom(pos3));
         assertEquals(State.Player.PLAYER_2, state1.getNextPlayer());
-        assertFalse(state1.isLegalMove(move1));
-        assertFalse(state1.isLegalMove(move3));
-        assertFalse(state1.isLegalMove(move4));
+    }
+
+    @Test
+    void testMakeMove_row() {
+        Position pos1 = new Position(0,0);
+        Position pos2 = new Position(0,3);
+        Position pos3 = new Position(0, 1);
+
+        TwoPhaseMoveState.TwoPhaseMove<Position> move = new TwoPhaseMoveState.TwoPhaseMove<>(pos1, pos2);
+
+        state1.makeMove(move);
+
+        assertFalse(state1.isLegalToMoveFrom(pos1));
+        assertFalse(state1.isLegalToMoveFrom(pos2));
+        assertFalse(state1.isLegalToMoveFrom(pos3));
+        assertEquals(State.Player.PLAYER_2, state1.getNextPlayer());
     }
 
     @Test
@@ -199,7 +213,7 @@ public class PebbleSweepStateTest {
 
     @Test
     void testHashCode() {
-        assertEquals(state1.hashCode(), state1.hashCode());
+        assertEquals(state1.hashCode(), new PebbleSweepState().hashCode());
         assertEquals(state1.hashCode(), state1.copy().hashCode());
     }
 
