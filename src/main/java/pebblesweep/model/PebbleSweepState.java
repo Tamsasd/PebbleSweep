@@ -1,6 +1,7 @@
 package pebblesweep.model;
 
 import game.TwoPhaseMoveState;
+import org.tinylog.Logger;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -219,6 +220,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     @Override
     public void makeMove(TwoPhaseMove<Position> move) throws IllegalArgumentException{
         if (!isLegalMove(move)) {
+            Logger.warn("Attempted illegal move: {}", move);
             throw new IllegalArgumentException("Cannot make illegal move: " + move);
         }
 
@@ -239,6 +241,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
             }
         }
 
+        Logger.trace("Player {} executed move {}", this.player, move);
         this.player = this.player.opponent();
     }
 
