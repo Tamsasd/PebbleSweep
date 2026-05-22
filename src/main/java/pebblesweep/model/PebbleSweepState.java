@@ -5,10 +5,14 @@ import game.TwoPhaseMoveState;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.IntStream;
 
 import static java.lang.Math.abs;
 
+/**
+ * Represents a state of the Pebble Sweep game.
+ * The game is played on a 4x4 board where players take turns removing 1 to 4 pebbles
+ * from a continuous horizontal or vertical line. The player forced to take the last pebble loses.
+ */
 public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweepState> {
 
     private Player player;
@@ -23,10 +27,19 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     private int numberOfRows = BOARD.length;
     private int numberOfColumns = BOARD[0].length;
 
+    /**
+     * Creates a new, initial state of the Pebble Sweep game.
+     * The board is fully populated with pebbles, and {@link Player#PLAYER_1} moves first.
+     */
     public PebbleSweepState() {
         this.player = Player.PLAYER_1;
     }
 
+    /**
+     * Creates a deep copy of the specified state.
+     *
+     * @param other the state to be copied
+     */
     public PebbleSweepState(PebbleSweepState other) {
         this.player = other.player;
         this.numberOfColumns = other.numberOfColumns;
@@ -129,7 +142,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
         else {
             distance = abs(move.from().column() - move.to().column());
         }
-        return distance <= 3;
+        return distance < 4;
     }
 
     /**
@@ -202,11 +215,77 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     }
 
     /**
+     * Computes and returns the set of all legal horizontal moves for a given row.
+     *
+     * @param row the index of the row to check for legal moves
+     * @return a {@code Set} containing all valid horizontal moves in the specified row
+     */
+    private Set<TwoPhaseMove<Position>> getLegalMovesInRow(short row) {
+        Set<TwoPhaseMove<Position>> legalMoves = new java.util.HashSet<>();
+
+        for (short startCol = 0; startCol < numberOfColumns; startCol++) {
+            if (!BOARD[row][startCol]) continue;
+
+            for (short endCol = startCol; endCol < numberOfColumns; endCol++) {
+                if (!BOARD[row][endCol]) break;
+
+                Position from = new Position(row, startCol);
+                Position to = new Position(row, endCol);
+
+                legalMoves.add(new TwoPhaseMove<>(from, to));
+
+                if (startCol != endCol) {
+                    legalMoves.add(new TwoPhaseMove<>(to, from));
+                }
+            }
+        }
+        return legalMoves;
+    }
+
+    /**
+     * Computes and returns the set of all legal vertical moves for a given column.
+     *
+     * @param col the index of the column to check for legal moves
+     * @return a {@code Set} containing all valid vertical moves in the specified column
+     */
+    private Set<TwoPhaseMove<Position>> getLegalMovesInColumn(short col) {
+        Set<TwoPhaseMove<Position>> legalMoves = new java.util.HashSet<>();
+
+        for (short startRow = 0; startRow < numberOfRows; startRow++) {
+            if (!BOARD[startRow][col]) continue;
+
+            for (short endRow = startRow; endRow < numberOfRows; endRow++) {
+                if (!BOARD[endRow][col]) break;
+
+                Position from = new Position(startRow, col);
+                Position to = new Position(endRow, col);
+
+                legalMoves.add(new TwoPhaseMove<>(from, to));
+
+                if (startRow != endRow) {
+                    legalMoves.add(new TwoPhaseMove<>(to, from));
+                }
+            }
+        }
+        return legalMoves;
+    }
+
+    /**
      * {@return the set of all moves that can be applied to the state}
      */
     @Override
     public Set<TwoPhaseMove<Position>> getLegalMoves() {
-        return Set.of();
+        Set<TwoPhaseMove<Position>> legalMoves = new java.util.HashSet<>();
+
+        for (short row = 0; row < numberOfRows; row++) {
+            legalMoves.addAll(getLegalMovesInRow(row));
+        }
+
+        for (short col = 0; col < numberOfColumns; col++) {
+            legalMoves.addAll(getLegalMovesInColumn(col));
+        }
+
+        return legalMoves;
     }
 
     /**
