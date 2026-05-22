@@ -36,6 +36,23 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     }
 
     /**
+     * Creates a game state specified by the next player and the board's configuration.
+     *
+     * @param player the player to move
+     * @param board the current state of the board
+     */
+    PebbleSweepState(boolean[][] board, Player player) {
+        this.player = player;
+        this.numberOfRows = board.length;
+        this.numberOfColumns = board[0].length;
+        this.BOARD = new boolean[this.numberOfRows][this.numberOfColumns];
+
+        for (int i = 0; i < this.numberOfRows; i++) {
+            this.BOARD[i] = Arrays.copyOf(board[i], board[i].length);
+        }
+    }
+
+    /**
      * Creates a deep copy of the specified state.
      *
      * @param other the state to be copied
@@ -316,5 +333,23 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     @Override
     public int hashCode() {
         return Objects.hash(player, Arrays.deepHashCode(BOARD));
+    }
+
+    /**
+     * Returns a string representation of the board state.
+     * Pebbles are represented by 'O', and empty spaces by '·'.
+     *
+     * @return a formatted string representing the current state of the board
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (int row = 0; row < numberOfRows; row++) {
+            for (int col = 0; col < numberOfColumns; col++) {
+                sb.append(BOARD[row][col] ? "O " : "· ");
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
     }
 }
