@@ -1,5 +1,6 @@
 package pebblesweep.model;
 
+import common.TwoPhaseMoveState;
 import game.State;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -77,5 +78,66 @@ public class PebbleSweepStateTest {
         assertFalse(state1.isGameOver());
         assertTrue(state2.isGameOver());
         assertFalse(state3.isGameOver());
+    }
+
+    @Test
+    void testGetStatus() {
+        assertEquals(State.Status.IN_PROGRESS, state1.getStatus());
+        assertEquals(State.Status.PLAYER_2_WINS, state2.getStatus());
+        assertNotEquals(State.Status.PLAYER_1_WINS, state2.getStatus());
+        assertEquals(State.Status.IN_PROGRESS, state3.getStatus());
+    }
+
+    @Test
+    void testIsWinner() {
+        assertFalse(state1.isWinner(State.Player.PLAYER_1));
+        assertFalse(state1.isWinner(State.Player.PLAYER_2));
+
+        assertFalse(state2.isWinner(State.Player.PLAYER_1));
+        assertTrue(state2.isWinner(State.Player.PLAYER_2));
+
+        assertFalse(state3.isWinner(State.Player.PLAYER_1));
+        assertFalse(state3.isWinner(State.Player.PLAYER_2));
+    }
+
+    @Test
+    void testIsLegalMove() {
+        Position pos1 = new Position(0,0);
+        Position pos2 = new Position(3,0);
+        Position pos3 = new Position(1,3);
+        Position pos4 = new Position(3,2);
+
+        TwoPhaseMoveState.TwoPhaseMove<Position> move1 = new TwoPhaseMoveState.TwoPhaseMove<>(pos1, pos2);
+        TwoPhaseMoveState.TwoPhaseMove<Position> move2 = new TwoPhaseMoveState.TwoPhaseMove<>(pos1, pos3);
+        TwoPhaseMoveState.TwoPhaseMove<Position> move3 = new TwoPhaseMoveState.TwoPhaseMove<>(pos2, pos4);
+        TwoPhaseMoveState.TwoPhaseMove<Position> move4 = new TwoPhaseMoveState.TwoPhaseMove<>(pos1, pos1);
+
+        assertTrue(state1.isLegalMove(move1));
+        assertFalse(state1.isLegalMove(move2));
+        assertTrue(state1.isLegalMove(move3));
+
+        assertFalse(state2.isLegalMove(move1));
+        assertFalse(state2.isLegalMove(move4));
+
+        assertFalse(state3.isLegalMove(move3));
+        assertTrue(state3.isLegalMove(move4));
+    }
+
+    @Test
+    void testMakeMove() {
+        Position pos1 = new Position(0,0);
+        Position pos2 = new Position(3,0);
+        Position pos4 = new Position(3,2);
+
+        TwoPhaseMoveState.TwoPhaseMove<Position> move1 = new TwoPhaseMoveState.TwoPhaseMove<>(pos1, pos2);
+        TwoPhaseMoveState.TwoPhaseMove<Position> move3 = new TwoPhaseMoveState.TwoPhaseMove<>(pos2, pos4);
+        TwoPhaseMoveState.TwoPhaseMove<Position> move4 = new TwoPhaseMoveState.TwoPhaseMove<>(pos1, pos1);
+
+        state1.makeMove(move1);
+
+        assertEquals(State.Player.PLAYER_2, state1.getNextPlayer());
+        assertFalse(state1.isLegalMove(move1));
+        assertFalse(state1.isLegalMove(move3));
+        assertFalse(state1.isLegalMove(move4));
     }
 }
