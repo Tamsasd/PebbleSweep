@@ -151,13 +151,16 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
      *
      * @param move the move specified by a starting and ending position
      */
-    private boolean isValidDistance(TwoPhaseMove<Position> move) {
+    private boolean isValidDistance(TwoPhaseMove<Position> move) throws IllegalArgumentException {
         int distance;
         if (isInSameColumn(move)) {
             distance = abs(move.from().row() - move.to().row());
         }
-        else {
+        else if (isInSameRow(move)){
             distance = abs(move.from().column() - move.to().column());
+        }
+        else {
+            throw new IllegalArgumentException("Illegal Move: endpoints must be in the same row or column!");
         }
         return distance < 4;
     }
@@ -169,7 +172,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
      *
      * @param move the move specified by a starting and ending position
      */
-    private boolean hasGap(TwoPhaseMove<Position> move) {
+    private boolean hasGap(TwoPhaseMove<Position> move) throws IllegalArgumentException {
         if (isInSameColumn(move)) {
             int col = move.from().column();
             int startRow = Math.min(move.from().row(), move.to().row());
@@ -179,7 +182,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
             }
             return false;
         }
-        else {
+        else if (isInSameRow(move)){
             int row = move.from().row();
             int startCol = Math.min(move.from().column(), move.to().column());
             int endCol = Math.max(move.from().column(), move.to().column());
@@ -187,6 +190,9 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
                 if (!BOARD[row][col]) return true;
             }
             return false;
+        }
+        else {
+            throw new IllegalArgumentException("Illegal Move: endpoints must be in the same row or column!");
         }
     }
 
@@ -208,9 +214,14 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
      * and only if {@link #isLegalMove(TwoPhaseMove)} returns {@code true}.
      *
      * @param move represents the move to be made
+     * @throws IllegalArgumentException if and illegal move is provided as a parameter
      */
     @Override
-    public void makeMove(TwoPhaseMove<Position> move) {
+    public void makeMove(TwoPhaseMove<Position> move) throws IllegalArgumentException{
+        if (!isLegalMove(move)) {
+            throw new IllegalArgumentException("Cannot make illegal move: " + move);
+        }
+
         if (isInSameColumn(move)) {
             int col = move.from().column();
             int startRow = Math.min(move.from().row(), move.to().row());

@@ -144,6 +144,17 @@ public class PebbleSweepStateTest {
     }
 
     @Test
+    void testMakeMoveThrows() {
+        Position pos1 = new Position(0, 0);
+        Position pos2 = new Position(1, 1);
+        TwoPhaseMoveState.TwoPhaseMove<Position> illegalMove = new TwoPhaseMoveState.TwoPhaseMove<>(pos1, pos2);
+        TwoPhaseMoveState.TwoPhaseMove<Position> legalMove = new TwoPhaseMoveState.TwoPhaseMove<>(pos1, pos1);
+
+        assertThrows(IllegalArgumentException.class, () -> state1.makeMove(illegalMove));
+        assertDoesNotThrow(() -> state1.makeMove(legalMove));
+    }
+
+    @Test
     void testGetLegalMoves() {
         assertEquals(112, (long) state1.getLegalMoves().size());
         assertEquals(Set.of(), state2.getLegalMoves());
