@@ -122,7 +122,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     @Override
     public boolean isWinner(Player player) {
         return isGameOver()
-                && !player.equals(this.player); // the player that picks the last pebble loses
+                && player.equals(this.player); // the player that picks the last pebble loses
     }
 
     /**

@@ -85,8 +85,8 @@ public class PebbleSweepStateTest {
     @Test
     void testGetStatus() {
         assertEquals(State.Status.IN_PROGRESS, state1.getStatus());
-        assertEquals(State.Status.PLAYER_2_WINS, state2.getStatus());
-        assertNotEquals(State.Status.PLAYER_1_WINS, state2.getStatus());
+        assertEquals(State.Status.PLAYER_1_WINS, state2.getStatus());
+        assertNotEquals(State.Status.PLAYER_2_WINS, state2.getStatus());
         assertEquals(State.Status.IN_PROGRESS, state3.getStatus());
     }
 
@@ -95,8 +95,8 @@ public class PebbleSweepStateTest {
         assertFalse(state1.isWinner(State.Player.PLAYER_1));
         assertFalse(state1.isWinner(State.Player.PLAYER_2));
 
-        assertFalse(state2.isWinner(State.Player.PLAYER_1));
-        assertTrue(state2.isWinner(State.Player.PLAYER_2));
+        assertTrue(state2.isWinner(State.Player.PLAYER_1));
+        assertFalse(state2.isWinner(State.Player.PLAYER_2));
 
         assertFalse(state3.isWinner(State.Player.PLAYER_1));
         assertFalse(state3.isWinner(State.Player.PLAYER_2));
