@@ -69,25 +69,31 @@ public class PebbleSweepController {
         for (int row = 0; row < 4; row++) {
             for (int col = 0; col < 4; col++) {
                 Position currentPos = new Position(row, col);
-                StackPane cell = new StackPane();
-
-                cell.setOnMouseClicked(e -> {
-                    var button = e.getButton();
-                    if (button == MouseButton.SECONDARY) {
-                        cancelSelection();
-                    }
-                    else if (button == MouseButton.PRIMARY) {
-                        handleCellClick(currentPos);
-                    }
-                });
-
-                cell.setOnMouseEntered(e -> updateBackgrounds(currentPos));
-                cell.setOnMouseExited( e-> updateBackgrounds(null));
+                StackPane cell = createCell(currentPos);
 
                 cells[row][col] = cell;
                 boardGrid.add(cell, col, row);
             }
         }
+    }
+
+    private StackPane createCell(Position pos) {
+        StackPane cell = new StackPane();
+
+        cell.setOnMouseClicked(e -> {
+            var button = e.getButton();
+            if (button == MouseButton.SECONDARY) {
+                cancelSelection();
+            }
+            else if (button == MouseButton.PRIMARY) {
+                handleCellClick(pos);
+            }
+        });
+
+        cell.setOnMouseEntered(e -> updateBackgrounds(pos));
+        cell.setOnMouseExited( e-> updateBackgrounds(null));
+
+        return cell;
     }
 
     private void drawPebbles() {
