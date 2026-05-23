@@ -37,6 +37,7 @@ public class StartController {
     /**
      * Handles the action event triggered by clicking the two player button.
      * Loads the main game board and replaces the current scene on the active stage.
+     * Starts a game with 2 players.
      *
      * @param event the action event containing information about the click
      */
@@ -64,13 +65,33 @@ public class StartController {
 
     /**
      * Handles the action event triggered by clicking the singleplayer button.
-     * Currently not implemented
+     * Loads the main game board and replaces the current scene on the active stage.
+     * Starts a game with 1 player, with the opponent being a bot.
      *
      * @param event the action event containing information about the click
      */
     @FXML
     public void startSinglePlayer(ActionEvent event) {
-        Logger.info("Single player mode is not yet implemented.");
+        try {
+            Logger.info("Starting single player game");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/game.fxml"));
+            Parent root = loader.load();
+
+            PebbleSweepController controller = loader.getController();
+            controller.setPlayerNames(
+                    player1Name.getText().isEmpty() ? "PLAYER_1" : player1Name.getText(),
+                    "Bot"
+            );
+
+            controller.setSinglePlayer(true);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            Logger.error(e, "Failed to load game.fxml");
+        }
     }
 
     /**

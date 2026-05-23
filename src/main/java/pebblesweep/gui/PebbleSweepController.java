@@ -2,6 +2,7 @@ package pebblesweep.gui;
 
 import common.TwoPhaseMoveState;
 import game.State;
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,6 +15,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.tinylog.Logger;
 import pebblesweep.model.GameResult;
 import pebblesweep.model.PebbleSweepState;
@@ -23,7 +25,7 @@ import pebblesweep.model.ResultManager;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Controller class for the Pebble Sweep game GUI.
@@ -57,6 +59,16 @@ public class PebbleSweepController {
      * The name of Player 2.
      */
     private String p2Name = "PLAYER_2";
+
+    /**
+     * True, if the gamemode is singleplayer (agains a bot).
+     */
+    private boolean isSinglePlayer = false;
+
+    /**
+     * True during the bot "thinking" period, otherwise false.
+     */
+    private boolean isBotThinking = false;
 
     /**
      * The current game state model.
@@ -213,7 +225,7 @@ public class PebbleSweepController {
      * @param clickedPos the logical position of the clicked cell
      */
     private void handleCellClick(Position clickedPos) {
-        if (gameState.isGameOver()) {
+        if (gameState.isGameOver() || isBotThinking) {
             return;
         }
 
@@ -255,12 +267,38 @@ public class PebbleSweepController {
             Logger.info("Move executed: {}", gameState.moveToString(move));
             startPos = null;
             updateUI();
+
+            if (isSinglePlayer && !gameState.isGameOver() && gameState.getNextPlayer() == State.Player.PLAYER_2) {
+                doRandomBotMove();
+            }
         }
         catch (IllegalArgumentException e) {
             Logger.warn("Invalid move attempted: {}", gameState.moveToString(move));
             cancelSelection();
             showError("Illegal move.","The selected move does not comply with the rules.");
         }
+    }
+
+    /**
+     * Executes a random legal move for the Bot after a 1-second delay.
+     */
+    private void doRandomBotMove() {
+        isBotThinking = true;
+        Logger.info("Bot is thinking...");
+
+        PauseTransition pause = new PauseTransition(Duration.seconds(1));
+        pause.setOnFinished(e -> {
+            Set<TwoPhaseMoveState.TwoPhaseMove<Position>> legalMovesSet = gameState.getLegalMoves();
+            List<TwoPhaseMoveState.TwoPhaseMove<Position>> legalMovesList = new ArrayList<>(legalMovesSet);
+
+            TwoPhaseMoveState.TwoPhaseMove<Position> chosenMove = legalMovesList.get(new Random().nextInt(legalMovesList.size()));
+            gameState.makeMove(chosenMove);
+
+            isBotThinking = false;
+            updateUI();
+        });
+
+        pause.play();
     }
 
     /**
@@ -447,5 +485,9 @@ public class PebbleSweepController {
         this.p1Name = p1;
         this.p2Name = p2;
         setPlayerLabel();
+    }
+
+    public void setSinglePlayer(boolean singlePlayer) {
+        this.isSinglePlayer = singlePlayer;
     }
 }
