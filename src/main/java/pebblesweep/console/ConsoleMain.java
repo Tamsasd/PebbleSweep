@@ -1,10 +1,15 @@
 package pebblesweep.console;
 
+import game.State;
 import game.console.TwoPhaseMoveGame;
 import org.tinylog.Logger;
+import pebblesweep.model.GameResult;
 import pebblesweep.model.PebbleSweepState;
 import pebblesweep.model.Position;
+import pebblesweep.model.ResultManager;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 /**
@@ -14,6 +19,7 @@ public class ConsoleMain {
 
     /**
      * The standard main method that delegates the execution of the console game.
+     * When the game is over it saves the results to a JSON file.
      *
      * @param args The command line arguments.
      */
@@ -23,6 +29,12 @@ public class ConsoleMain {
         TwoPhaseMoveGame<Position, PebbleSweepState> game = new TwoPhaseMoveGame<>(state, ConsoleMain::parseMove);
 
         game.start();
+
+        if (state.isGameOver()) {
+            String winner = state.isWinner(State.Player.PLAYER_1) ? "PLAYER_1" : "PLAYER_2";
+            String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            ResultManager.saveResult(new GameResult(winner, date));
+        }
     }
 
     /**
