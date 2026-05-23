@@ -24,7 +24,14 @@ import java.util.Objects;
  */
 public class StartController {
 
+    /**
+     * The name of Player 1.
+     */
     @FXML private TextField player1Name;
+
+    /**
+     * The name of Player 2.
+     */
     @FXML private TextField player2Name;
 
     /**
