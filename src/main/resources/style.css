@@ -1,0 +1,11 @@
+.input {
+    -fx-padding: 15px;
+    -fx-background-radius: 8px;
+    -fx-border-color: #d1d1d1;
+    -fx-border-radius: 8px;
+}
+
+.input:focused {
+    -fx-border-color: #ADD8E6;
+    -fx-border-width: 2px;
+}
