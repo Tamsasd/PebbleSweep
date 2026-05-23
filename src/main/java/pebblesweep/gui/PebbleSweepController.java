@@ -73,10 +73,19 @@ public class PebbleSweepController {
         else {
             TwoPhaseMoveState.TwoPhaseMove<Position> move = new TwoPhaseMoveState.TwoPhaseMove<>(startPos, clickedPos);
 
-            gameState.makeMove(move);
-            Logger.info("Move executed: {}", gameState.moveToString(move));
-            startPos = null;
-            updateUI();
+            try {
+                gameState.makeMove(move);
+                Logger.info("Move executed: {}", gameState.moveToString(move));
+                startPos = null;
+                updateUI();
+            }
+            catch (IllegalArgumentException e) {
+                Logger.warn("Invalid move attempted: {}", gameState.moveToString(move));
+                drawBoard();
+                showError("Illegal move.","The selected move does not comply with the rules.");
+            }
+
+
         }
     }
 
@@ -110,6 +119,4 @@ public class PebbleSweepController {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
-
 }
