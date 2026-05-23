@@ -10,7 +10,7 @@ Consider a game board consisting of a 4×4 grid of cells, each containing a ston
 Players move in turns.
 In a move, a player must choose a (nonempty) row or column and remove 1, 2, 3, or 4 stones from it.
 If two or more stones are removed, they must be adjacent.
-The winner of the game is the player who makes the last move.
+The winner of the game is the player who does not make the last move.
 
 ## Features
 
@@ -45,8 +45,15 @@ The winner of the game is the player who makes the last move.
     java -cp target/PebbleSweep-1.0-SNAPSHOT.jar pebblesweep.console.ConsoleMain
     ```
 
+## How to play (GUI mode)
 
-## Example Game
+1. Start the game
+2. Type your name(s) in the corresponding input boxes. By default, the names are *PLAYER_1* and *PLAYER_2*.
+3. The in-turn player's name is highlighted. They have to click on two pebbles (or twice on a single pebble). The pebble(s) clicked on, and the pebbles between them will be selected as their move.
+4. The pebbles are sweeped, and now it's the other player's turn. The steps are repeated from step 3, until there's no pebbles left.
+5. The player who sweeps the last pebble, loses; the other player wins.
+
+## Example Game (Console)
 
 The following sequence demonstrates a complete, valid game played through the console interface. In the console, a move consists of selecting the starting coordinate `row col` and then the ending coordinate `row col`.
 
@@ -63,11 +70,6 @@ PLAYER_1 wins
 ```
 
 _(Explanation: Players take turns sweeping entire rows by selecting the first and last pebbles in the rows. Player 2 sweeps the last remaining row, leaving the board empty, thus ending the game)._
-
-## Future Improvements (TODO)
-
--   Singleplayer Mode: Implement a Bot using the Minimax algorithm with alpha-beta pruning, or with random stepping to allow playing against the computer.
-
 
 ## Acknowledgments
 
