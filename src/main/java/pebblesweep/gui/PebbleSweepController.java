@@ -3,6 +3,7 @@ package pebblesweep.gui;
 import common.TwoPhaseMoveState;
 import game.State;
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -321,9 +322,10 @@ public class PebbleSweepController {
             String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             ResultManager.saveResult(new GameResult(winner, date));
 
-            showInfo("Game Over!", winner + " wins!");
-
-            returnToMainMenu();
+            Platform.runLater(() -> {
+                showInfo("Game Over!", winner + " wins!");
+                returnToMainMenu();
+            });
         }
     }
 
