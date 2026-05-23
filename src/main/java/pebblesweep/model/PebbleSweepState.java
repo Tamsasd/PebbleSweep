@@ -370,7 +370,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
         return sb.toString();
     }
 
-    private String moveToString(TwoPhaseMove<Position> move) {
+    public String moveToString(TwoPhaseMove<Position> move) {
         StringBuilder sb = new StringBuilder();
         sb.append("(").append(move.from().row()).append(", ").append(move.from().column()).append(")");
         sb.append(" --> ");
