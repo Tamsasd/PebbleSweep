@@ -18,15 +18,15 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
 
     private Player player;
 
-    private boolean[][] BOARD = {
+    private boolean[][] board = {
             {true, true, true, true},
             {true, true, true, true},
             {true, true, true, true},
             {true, true, true, true}
     };
 
-    private int numberOfRows = BOARD.length;
-    private int numberOfColumns = BOARD[0].length;
+    private int numberOfRows = board.length;
+    private int numberOfColumns = board[0].length;
 
     /**
      * Creates a new, initial state of the Pebble Sweep game.
@@ -46,10 +46,10 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
         this.player = player;
         this.numberOfRows = board.length;
         this.numberOfColumns = board[0].length;
-        this.BOARD = new boolean[this.numberOfRows][this.numberOfColumns];
+        this.board = new boolean[this.numberOfRows][this.numberOfColumns];
 
         for (int i = 0; i < this.numberOfRows; i++) {
-            this.BOARD[i] = Arrays.copyOf(board[i], board[i].length);
+            this.board[i] = Arrays.copyOf(board[i], board[i].length);
         }
     }
 
@@ -63,10 +63,10 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
         this.numberOfColumns = other.numberOfColumns;
         this.numberOfRows = other.numberOfRows;
 
-        this.BOARD = new boolean[other.numberOfRows][other.numberOfColumns];
+        this.board = new boolean[other.numberOfRows][other.numberOfColumns];
 
         for (int i = 0; i < other.numberOfRows; i++) {
-            this.BOARD[i] = Arrays.copyOf(other.BOARD[i], other.BOARD[i].length);
+            this.board[i] = Arrays.copyOf(other.board[i], other.board[i].length);
         }
     }
 
@@ -78,7 +78,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
      */
     @Override
     public boolean isLegalToMoveFrom(Position from) {
-        return BOARD[from.row()][from.column()];
+        return board[from.row()][from.column()];
     }
 
     /**
@@ -96,7 +96,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     public boolean isGameOver() {
         for (int row = 0; row < numberOfRows; row++) {
             for (int col = 0; col < numberOfColumns; col++) {
-                if (BOARD[row][col]) return false;
+                if (board[row][col]) return false;
             }
         }
         return true;
@@ -179,7 +179,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
             int startRow = Math.min(move.from().row(), move.to().row());
             int endRow = Math.max(move.from().row(), move.to().row());
             for (int row = startRow; row <= endRow; row++) {
-                if (!BOARD[row][col]) return true;
+                if (!board[row][col]) return true;
             }
             return false;
         }
@@ -188,7 +188,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
             int startCol = Math.min(move.from().column(), move.to().column());
             int endCol = Math.max(move.from().column(), move.to().column());
             for (int col = startCol; col <= endCol; col++) {
-                if (!BOARD[row][col]) return true;
+                if (!board[row][col]) return true;
             }
             return false;
         }
@@ -229,7 +229,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
             int startRow = Math.min(move.from().row(), move.to().row());
             int endRow = Math.max(move.from().row(), move.to().row());
             for (int row = startRow; row <= endRow; row++) {
-                BOARD[row][col] = false;
+                board[row][col] = false;
             }
         }
         else {
@@ -237,7 +237,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
             int startCol = Math.min(move.from().column(), move.to().column());
             int endCol = Math.max(move.from().column(), move.to().column());
             for (int col = startCol; col <= endCol; col++) {
-                BOARD[row][col] = false;
+                board[row][col] = false;
             }
         }
 
@@ -255,10 +255,10 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
         Set<TwoPhaseMove<Position>> legalMoves = new java.util.HashSet<>();
 
         for (int startCol = 0; startCol < numberOfColumns; startCol++) {
-            if (!BOARD[row][startCol]) continue;
+            if (!board[row][startCol]) continue;
 
             for (int endCol = startCol; endCol < numberOfColumns; endCol++) {
-                if (!BOARD[row][endCol]) break;
+                if (!board[row][endCol]) break;
 
                 Position from = new Position(row, startCol);
                 Position to = new Position(row, endCol);
@@ -283,10 +283,10 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
         Set<TwoPhaseMove<Position>> legalMoves = new java.util.HashSet<>();
 
         for (int startRow = 0; startRow < numberOfRows; startRow++) {
-            if (!BOARD[startRow][col]) continue;
+            if (!board[startRow][col]) continue;
 
             for (int endRow = startRow; endRow < numberOfRows; endRow++) {
-                if (!BOARD[endRow][col]) break;
+                if (!board[endRow][col]) break;
 
                 Position from = new Position(startRow, col);
                 Position to = new Position(endRow, col);
@@ -338,7 +338,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         PebbleSweepState that = (PebbleSweepState) o;
-        return player == that.player && Objects.deepEquals(BOARD, that.BOARD);
+        return player == that.player && Objects.deepEquals(board, that.board);
     }
 
     /**
@@ -346,7 +346,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
      */
     @Override
     public int hashCode() {
-        return Objects.hash(player, Arrays.deepHashCode(BOARD));
+        return Objects.hash(player, Arrays.deepHashCode(board));
     }
 
     /**
@@ -363,9 +363,9 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
         for (int row = 0; row < numberOfRows; row++) {
             sb.append(row + " | ");
             for (int col = 0; col < numberOfColumns-1; col++) {
-                sb.append(BOARD[row][col] ? "O " : ". ");
+                sb.append(board[row][col] ? "O " : ". ");
             }
-            sb.append(BOARD[row][numberOfColumns-1] ? "O\n" : ".\n");
+            sb.append(board[row][numberOfColumns-1] ? "O\n" : ".\n");
         }
         return sb.toString();
     }
