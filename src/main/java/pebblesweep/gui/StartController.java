@@ -55,6 +55,11 @@ public class StartController {
         Logger.info("Single player mode is not yet implemented.");
     }
 
+    /**
+     * Displays the leaderboard showing past game results in an alert dialog.
+     *
+     * @param event the action event containing information about the click
+     */
     @FXML
     public void showLeaderboard(ActionEvent event) {
         Logger.info("Opening leaderboard...");

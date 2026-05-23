@@ -9,10 +9,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Manages IO operations of the game results to and from a JSON file.
+ */
 public class ResultManager {
     private static final String FILE_PATH = "results.json";
     private static final ObjectMapper mapper = new ObjectMapper();
 
+    /**
+     * Loads the list of game results from the JSON file
+     *
+     * @return a list of {@link GameResult} objects, or and empty list if the file does not exist.
+     */
     public static List<GameResult> loadResults() {
         File file = new File(FILE_PATH);
         if (!file.exists()) {
@@ -26,6 +34,11 @@ public class ResultManager {
         }
     }
 
+    /**
+     * Adds a new result to the JSON file
+     *
+     * @param result the {@link GameResult} to be saved.
+     */
     public static void saveResult(GameResult result) {
         List<GameResult> results = loadResults();
         results.add(result);
