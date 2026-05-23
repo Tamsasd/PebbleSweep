@@ -115,24 +115,32 @@ public class PebbleSweepController {
         }
 
         if (startPos == null && gameState.isLegalToMoveFrom(clickedPos)) {
-            startPos = clickedPos;
-            Logger.debug("Starting endpoint: {}", startPos);
-            updateBackgrounds(clickedPos);
+            setStartPosition(clickedPos);
         }
         else {
-            TwoPhaseMoveState.TwoPhaseMove<Position> move = new TwoPhaseMoveState.TwoPhaseMove<>(startPos, clickedPos);
+            setEndPosition(clickedPos);
+        }
+    }
 
-            try {
-                gameState.makeMove(move);
-                Logger.info("Move executed: {}", gameState.moveToString(move));
-                startPos = null;
-                updateUI();
-            }
-            catch (IllegalArgumentException e) {
-                Logger.warn("Invalid move attempted: {}", gameState.moveToString(move));
-                cancelSelection();
-                showError("Illegal move.","The selected move does not comply with the rules.");
-            }
+    private void setStartPosition(Position pos) {
+        startPos = pos;
+        Logger.debug("Starting endpoint: {}", startPos);
+        updateBackgrounds(startPos);
+    }
+
+    private void setEndPosition(Position pos) {
+        TwoPhaseMoveState.TwoPhaseMove<Position> move = new TwoPhaseMoveState.TwoPhaseMove<>(startPos, pos);
+
+        try {
+            gameState.makeMove(move);
+            Logger.info("Move executed: {}", gameState.moveToString(move));
+            startPos = null;
+            updateUI();
+        }
+        catch (IllegalArgumentException e) {
+            Logger.warn("Invalid move attempted: {}", gameState.moveToString(move));
+            cancelSelection();
+            showError("Illegal move.","The selected move does not comply with the rules.");
         }
     }
 
@@ -182,35 +190,51 @@ public class PebbleSweepController {
     }
 
     private void updateBackgrounds(Position hoverPos) {
-        for (int row = 0; row < 4; row++) {
-            for (int col = 0; col < 4; col++) {
-                cells[row][col].setStyle(DEFAULT_STYLE);
+        resetBackgrounds();
 
-                if (startPos != null && startPos.row() == row && startPos.column() == col) {
-                    cells[row][col].setStyle(STARTPOINT_HIGHLIGHT_STYLE);
-                }
-            }
-        }
+        setStartpointBackground();
 
         if (hoverPos == null || gameState.isGameOver()) return;
 
         if (startPos == null) {
-            cells[hoverPos.row()][hoverPos.column()].setStyle(HIGHLIGHT_STYLE);
+            setHoverBackground(hoverPos);
         }
         else {
-            TwoPhaseMoveState.TwoPhaseMove<Position> potentialMove = new TwoPhaseMoveState.TwoPhaseMove<>(startPos, hoverPos);
+            setPathBackground(hoverPos);
+        }
+    }
 
-            if (gameState.isLegalMove(potentialMove)) {
-                int startRow = Math.min(startPos.row(), hoverPos.row());
-                int endRow = Math.max(startPos.row(), hoverPos.row());
-                int startCol = Math.min(startPos.column(), hoverPos.column());
-                int endCol = Math.max(startPos.column(), hoverPos.column());
+    private void resetBackgrounds() {
+        for (int row = 0; row < 4; row++) {
+            for (int col = 0; col < 4; col++) {
+                cells[row][col].setStyle(DEFAULT_STYLE);
+            }
+        }
+    }
 
-                for (int row = startRow; row <= endRow; row++) {
-                    for (int col = startCol; col <= endCol; col++) {
-                        if (!(row == startPos.row() && col == startPos.column())) {
-                            cells[row][col].setStyle(HIGHLIGHT_STYLE);
-                        }
+    private void setStartpointBackground() {
+        if (startPos != null) {
+            cells[startPos.row()][startPos.column()].setStyle(STARTPOINT_HIGHLIGHT_STYLE);
+        }
+    }
+
+    private void setHoverBackground(Position hoverPos) {
+        cells[hoverPos.row()][hoverPos.column()].setStyle(HIGHLIGHT_STYLE);
+    }
+
+    private void setPathBackground(Position hoverPos) {
+        TwoPhaseMoveState.TwoPhaseMove<Position> potentialMove = new TwoPhaseMoveState.TwoPhaseMove<>(startPos, hoverPos);
+
+        if (gameState.isLegalMove(potentialMove)) {
+            int startRow = Math.min(startPos.row(), hoverPos.row());
+            int endRow = Math.max(startPos.row(), hoverPos.row());
+            int startCol = Math.min(startPos.column(), hoverPos.column());
+            int endCol = Math.max(startPos.column(), hoverPos.column());
+
+            for (int row = startRow; row <= endRow; row++) {
+                for (int col = startCol; col <= endCol; col++) {
+                    if (!(row == startPos.row() && col == startPos.column())) {
+                        setHoverBackground(new Position(row, col));
                     }
                 }
             }
