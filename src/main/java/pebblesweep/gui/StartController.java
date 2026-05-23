@@ -51,7 +51,7 @@ public class StartController {
      * Loads the main game board and replaces the current scene on the active stage.
      * Starts a game with 2 players.
      *
-     * @param event the action event containing information about the click
+     * @param event the {@link ActionEvent} containing information about the click
      */
     @FXML
     public void startTwoPlayer(ActionEvent event) {
@@ -80,7 +80,7 @@ public class StartController {
      * Loads the main game board and replaces the current scene on the active stage.
      * Starts a game with 1 player, with the opponent being a bot.
      *
-     * @param event the action event containing information about the click
+     * @param event the {@link ActionEvent} containing information about the click
      */
     @FXML
     public void startSinglePlayer(ActionEvent event) {
@@ -109,7 +109,7 @@ public class StartController {
     /**
      * Displays the leaderboard showing past game results in an alert dialog.
      *
-     * @param event the action event containing information about the click
+     * @param event the {@link ActionEvent} containing information about the click
      */
     @FXML
     public void showLeaderboard(ActionEvent event) {

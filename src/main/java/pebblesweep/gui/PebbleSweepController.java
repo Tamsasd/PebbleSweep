@@ -62,7 +62,7 @@ public class PebbleSweepController {
     private String p2Name = "PLAYER_2";
 
     /**
-     * True, if the gamemode is singleplayer (agains a bot).
+     * True, if the game mode is singleplayer (against a bot).
      */
     private boolean isSinglePlayer = false;
 
@@ -107,12 +107,12 @@ public class PebbleSweepController {
     private final String STARTPOINT_HIGHLIGHT_STYLE = "-fx-background-color: green";
 
     /**
-     * The style for the active player's label.
+     * The style for the active player's {@link Label}.
      */
     private final String CURRENT_PLAYER_STYLE = "-fx-background-color: #ADD8E6; -fx-padding: 10px; -fx-background-radius: 5px;";
 
     /**
-     * The style for the inactive player's label.
+     * The style for the inactive player's {@link Label}.
      */
     private final String OTHER_PLAYER_STYLE = "-fx-background-color: transparent; -fx-padding: 10px;";
 
@@ -146,7 +146,7 @@ public class PebbleSweepController {
     }
 
     /**
-     * Prepares the GridPane by creating and adding interactive cells.
+     * Prepares the {@link GridPane} by creating and adding interactive cells.
      * Clears any existing children before generating the new 4x4 grid.
      */
     private void setupBoard() {
@@ -221,7 +221,7 @@ public class PebbleSweepController {
 
     /**
      * Handles primary mouse clicks on a board cell.
-     * Detemines whether to start a new move or complete an ongoing move.
+     * Determines whether to start a new move or complete an ongoing move.
      *
      * @param clickedPos the logical position of the clicked cell
      */
@@ -243,9 +243,9 @@ public class PebbleSweepController {
     }
 
     /**
-     * Sets the starting position for a two-phase move and updates the corresponding UI highlights.
+     * Sets the starting {@link Position} for a two-phase move and updates the corresponding UI highlights.
      *
-     * @param pos the starting position selected by the player
+     * @param pos the starting {@link Position} selected by the player
      */
     private void setStartPosition(Position pos) {
         startPos = pos;
@@ -254,11 +254,11 @@ public class PebbleSweepController {
     }
 
     /**
-     * Attempts to execute a move ending at the specified position.
+     * Attempts to execute a move ending at the specified {@link Position}.
      * Updates the UI if the move is valid.
      * Shows and error dialog, if the move is invalid.
      *
-     * @param pos the target end position for the move
+     * @param pos the target end {@link Position} for the move
      */
     private void setEndPosition(Position pos) {
         TwoPhaseMoveState.TwoPhaseMove<Position> move = new TwoPhaseMoveState.TwoPhaseMove<>(startPos, pos);
@@ -303,7 +303,7 @@ public class PebbleSweepController {
     }
 
     /**
-     * Syncronizes the GUI with the current game state.
+     * Synchronizes the GUI with the current game state.
      */
     private void updateUI() {
         drawPebbles();
@@ -362,8 +362,8 @@ public class PebbleSweepController {
     /**
      * Displays a blocking error alert dialog.
      *
-     * @param title the title of the alert window
-     * @param message the detailed error message
+     * @param title the {@code title} of the alert window
+     * @param message the detailed error {@code message}
      */
     private void showError(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -376,8 +376,8 @@ public class PebbleSweepController {
     /**
      * Displays a blocking informational alert dialog.
      *
-     * @param title the title of the alert window
-     * @param message the detailed informational message
+     * @param title the {@code title} of the alert window
+     * @param message the detailed informational {@code message}
      */
     private void showInfo(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -403,7 +403,7 @@ public class PebbleSweepController {
      * Sets the background coloring of all cells to reflect the current
      * selection state and mouse hover position.
      *
-     * @param hoverPos the position currently being hovered over. {@code null}, if outside the board
+     * @param hoverPos the {@link Position} currently being hovered over. {@code null}, if outside the board
      */
     private void updateBackgrounds(Position hoverPos) {
         resetBackgrounds();
@@ -432,7 +432,7 @@ public class PebbleSweepController {
     }
 
     /**
-     * Highlights the currently selected starting position, if exists.
+     * Highlights the currently selected starting {@link Position}, if exists.
      */
     private void setStartpointBackground() {
         if (startPos != null) {
@@ -489,6 +489,12 @@ public class PebbleSweepController {
         setPlayerLabel();
     }
 
+    /**
+     * Sets the game mode to single player (bot opponent) if the parameter provided
+     * is {@code true}, otherwise it sets the game mode to multiplayer.
+     *
+     * @param singlePlayer the condition, in which the game mode should be set to single player
+     */
     public void setSinglePlayer(boolean singlePlayer) {
         this.isSinglePlayer = singlePlayer;
     }

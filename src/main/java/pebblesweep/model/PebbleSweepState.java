@@ -52,8 +52,8 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     /**
      * Creates a game state specified by the next player and the board's configuration.
      *
-     * @param player the player to move
-     * @param board the current state of the board
+     * @param player the {@code player} to move
+     * @param board the current state of the {@code board}
      */
     PebbleSweepState(boolean[][] board, Player player) {
         this.player = player;
@@ -67,7 +67,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     }
 
     /**
-     * Creates a deep copy of the specified state.
+     * Creates a deep copy of the specified {@link PebbleSweepState}.
      *
      * @param other the state to be copied
      */
@@ -84,10 +84,10 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     }
 
     /**
-     * {@return whether it is possible to make a move from the position
-     * specified}.
+     * {@return {@code true} if it is possible to make a move from the position
+     * specified, otherwise {@code false}}.
      *
-     * @param from represents where to move from
+     * @param from represents where to move {@code from}
      */
     @Override
     public boolean isLegalToMoveFrom(Position from) {
@@ -95,7 +95,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     }
 
     /**
-     * {@return the player who moves next.}
+     * {@return the {@link game.State.Player} who moves next.}
      */
     @Override
     public Player getNextPlayer() {
@@ -103,7 +103,9 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     }
 
     /**
-     * {@return whether the game is over, by checking if there's any pebbles left to sweep.}
+     * Checks if the game is over, by checking if there's any pebbles left to sweep.
+     *
+     * @return {@code true} if the game is over, otherwise {@code} false
      */
     @Override
     public boolean isGameOver() {
@@ -129,10 +131,10 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     }
 
     /**
-     * {@return whether the player specified has won the game.}
+     * {@return {@code true} if the player specified won the game, otherwise {@code false}.}
      *
-     * @param player the player to be tested for win
-     */
+     * @param player the {@code player} to be tested for win
+    */
     @Override
     public boolean isWinner(Player player) {
         return isGameOver()
@@ -140,18 +142,20 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     }
 
     /**
-     * {@return whether the two endpoints are in the same column.}
+     * Checks if the two endpoints are in the same column.
      *
-     * @param move the move specified by a starting and ending position
+     * @param move the {@code move} specified by a starting and ending position
+     * @return {@code true} if the two endpoints are in the same column, otherwise {@code false}.
      */
     private boolean isInSameColumn(TwoPhaseMove<Position> move) {
         return move.from().column() == move.to().column();
     }
 
     /**
-     * {@return whether the two endpoints are in the same row.}
+     * Checks if the two endpoints are in the same row.
      *
-     * @param move the move specified by a starting and ending position
+     * @param move the {@code move} specified by a starting and ending position
+     * @return {@code true} if the two endpoints are in the same row, otherwise {@code false}.
      */
     private boolean isInSameRow(TwoPhaseMove<Position> move)
     {
@@ -159,11 +163,13 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     }
 
     /**
-     * {@return whether the row or column of the move has any spaces in between the endpoints.}
+     * Checks if the row or column of the move has a valid distance (less than 4).
      * This method should be called if and only if {@link #isInSameColumn(TwoPhaseMove)} or
      * {@link #isInSameRow(TwoPhaseMove)} returns {@code true}.
      *
-     * @param move the move specified by a starting and ending position
+     * @param move the {@code move} specified by a starting and ending position
+     * @return {@code true} if the distance is valid, otherwise {@code false}.
+     * @throws IllegalArgumentException if the endpoints are not in the same row or column
      */
     private boolean isValidDistance(TwoPhaseMove<Position> move) throws IllegalArgumentException {
         int distance;
@@ -180,11 +186,13 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     }
 
     /**
-     * {@return whether the row or column of the move has any spaces in between the endpoints.}
+     * Checks if the row or column of the move has any spaces in between the endpoints.
      * This method should be called if and only if {@link #isInSameColumn(TwoPhaseMove)} or
      * {@link #isInSameRow(TwoPhaseMove)} returns {@code true}.
      *
-     * @param move the move specified by a starting and ending position
+     * @param move the {@code move} specified by a starting and ending position
+     * @return {@code true} if there is a gap, otherwise {@code false}.
+     * @throws IllegalArgumentException if the endpoints are not in the same row or column
      */
     private boolean hasGap(TwoPhaseMove<Position> move) throws IllegalArgumentException {
         if (isInSameColumn(move)) {
@@ -211,9 +219,10 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     }
 
     /**
-     * {@return whether the move provided can be applied to the state.}
+     * Checks if the move provided can be applied to the current state.
      *
-     * @param move represents the move to be made
+     * @param move represents the {@code move} to be made
+     * @return {@code true} if the move can be applied, otherwise {@code false}.
      */
     @Override
     public boolean isLegalMove(TwoPhaseMove<Position> move) {
@@ -224,10 +233,10 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
 
 
     /**
-     * Applies the move provided to the state. This method should be called if
+     * Applies the move provided to the {@link PebbleSweepState}. This method should be called if
      * and only if {@link #isLegalMove(TwoPhaseMove)} returns {@code true}.
      *
-     * @param move represents the move to be made
+     * @param move represents the {@code move} to be made
      * @throws IllegalArgumentException if and illegal move is provided as a parameter
      */
     @Override
@@ -261,7 +270,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     /**
      * Computes and returns the set of all legal horizontal moves for a given row.
      *
-     * @param row the index of the row to check for legal moves
+     * @param row the index of the {@code row} to check for legal moves
      * @return a {@code Set} containing all valid horizontal moves in the specified row
      */
     private Set<TwoPhaseMove<Position>> getLegalMovesInRow(int row) {
@@ -315,7 +324,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     }
 
     /**
-     * {@return the set of all moves that can be applied to the state.}
+     * {@return the {@link Set} of all moves that can be applied to the {@link game.State}.}
      */
     @Override
     public Set<TwoPhaseMove<Position>> getLegalMoves() {
@@ -333,7 +342,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     }
 
     /**
-     * {@return a deep copy of this state.}
+     * {@return a deep copy of this {@link PebbleSweepState}.}
      */
     @Override
     public PebbleSweepState copy() {
@@ -341,7 +350,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     }
 
     /**
-     * Compares the specified object with this state.
+     * Compares the specified object with this {@link PebbleSweepState}.
      *
      * @param o   the reference object with which to compare.
      * @return {@code true} if the specified object is equal to this state,
@@ -355,7 +364,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     }
 
     /**
-     * {@return the hash code value for this state.}
+     * {@return the hash code value for this {@link PebbleSweepState}.}
      */
     @Override
     public int hashCode() {
@@ -366,7 +375,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
      * Returns a string representation of the board state.
      * Pebbles are represented by 'O', and empty spaces by '·'.
      *
-     * @return a formatted string representing the current state of the board
+     * @return a formatted {@link String} representing the current state of the board
      */
     @Override
     public String toString() {

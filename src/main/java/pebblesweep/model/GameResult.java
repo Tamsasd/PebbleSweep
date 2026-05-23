@@ -10,7 +10,7 @@ public class GameResult {
     private String winner;
 
     /**
-     * The date and time when the game was finished.
+     * The {@code date} and time when the game was finished.
      */
     private String date;
 
@@ -20,10 +20,10 @@ public class GameResult {
     public GameResult() {}
 
     /**
-     * Creates a new GameResult.
+     * Creates a new {@link GameResult}.
      *
      * @param winner the name of the winning player
-     * @param date the date and time the game was finished
+     * @param date the {@code date} and time the game was finished
      */
     public GameResult(String winner, String date) {
         this.winner = winner;
@@ -33,7 +33,7 @@ public class GameResult {
     /**
      * Retrieves the name of the winning player.
      *
-     * @return the winner's name
+     * @return the {@code winner}'s name
      */
     public String getWinner() {
         return winner;
@@ -42,7 +42,7 @@ public class GameResult {
     /**
      * Sets the name of the winning player.
      *
-     * @param winner the winner's name to set
+     * @param winner the {@code winner}'s name to set
      */
     public void setWinner(String winner) {
         this.winner = winner;

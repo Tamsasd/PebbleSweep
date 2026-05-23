@@ -17,7 +17,7 @@ public class PebbleSweepApplication extends Application {
      * Starts the JavaFX application.
      * Loads the FXML file and configures the primary stage.
      *
-     * @param stage the primary stage for this application, onto which the scene will be set
+     * @param stage the primary {@code stage} for this application, onto which the scene will be set
      * @throws Exception if the FXML resource cannot be loaded
      */
     @Override

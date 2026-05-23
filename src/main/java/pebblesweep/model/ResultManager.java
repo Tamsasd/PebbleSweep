@@ -19,14 +19,14 @@ public class ResultManager {
     private static final String FILE_PATH = "results.json";
 
     /**
-     * The Jackson ObjectMapper used for JSON serialization and deserialization.
+     * The Jackson {@link ObjectMapper} used for JSON serialization and deserialization.
      */
     private static final ObjectMapper mapper = new ObjectMapper();
 
     /**
-     * Loads the list of game results from the JSON file.
+     * Loads the {@link List} of game results from the JSON file.
      *
-     * @return a list of {@link GameResult} objects, or and empty list if the file does not exist.
+     * @return a {@link List} of {@link GameResult} objects, or and empty {@link List} if the file does not exist.
      */
     public static List<GameResult> loadResults() {
         File file = new File(FILE_PATH);
