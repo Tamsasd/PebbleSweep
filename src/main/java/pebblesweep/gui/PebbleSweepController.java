@@ -3,6 +3,9 @@ package pebblesweep.gui;
 import common.TwoPhaseMoveState;
 import game.State;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -10,12 +13,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 import org.tinylog.Logger;
 import pebblesweep.model.GameResult;
 import pebblesweep.model.PebbleSweepState;
 import pebblesweep.model.Position;
 import pebblesweep.model.ResultManager;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -274,11 +279,28 @@ public class PebbleSweepController {
      */
     private void checkGameOver() {
         if (gameState.isGameOver()) {
-            String winner = gameState.isWinner(State.Player.PLAYER_1) ? "PLAYER_1" : "PLAYER_2";
+            String winner = gameState.isWinner(State.Player.PLAYER_1) ? p1Name : p2Name;
             String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             ResultManager.saveResult(new GameResult(winner, date));
 
-            showInfo("Game Over!", gameState.getStatus().equals(State.Status.PLAYER_1_WINS) ? p1Name + " wins!" : p2Name + " wins!");
+            showInfo("Game Over!", winner + " wins!");
+
+            returnToMainMenu();
+        }
+    }
+
+    /**
+     * Returns to the main menu scene.
+     */
+    private void returnToMainMenu() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/start.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) boardGrid.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            Logger.error(e, "Failed to load start.fxml");
         }
     }
 
