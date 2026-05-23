@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.tinylog.Logger;
 
@@ -23,6 +24,9 @@ import java.util.Objects;
  */
 public class StartController {
 
+    @FXML private TextField player1Name;
+    @FXML private TextField player2Name;
+
     /**
      * Handles the action event triggered by clicking the two player button.
      * Loads the main game board and replaces the current scene on the active stage.
@@ -33,7 +37,14 @@ public class StartController {
     public void startTwoPlayer(ActionEvent event) {
         try {
             Logger.info("Starting two player game");
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/game.fxml")));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/game.fxml"));
+            Parent root = loader.load();
+
+            PebbleSweepController controller = loader.getController();
+            controller.setPlayerNames(
+                    player1Name.getText().isEmpty() ? "PLAYER_1" : player1Name.getText(),
+                    player2Name.getText().isEmpty() ? "PLAYER_2" : player2Name.getText()
+            );
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 

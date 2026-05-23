@@ -44,6 +44,16 @@ public class PebbleSweepController {
     private Label player2Label;
 
     /**
+     * The name of Player 1.
+     */
+    private String p1Name = "PLAYER_1";
+
+    /**
+     * The name of Player 2.
+     */
+    private String p2Name = "PLAYER_2";
+
+    /**
      * The current game state model.
      */
     private PebbleSweepState gameState;
@@ -268,7 +278,7 @@ public class PebbleSweepController {
             String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             ResultManager.saveResult(new GameResult(winner, date));
 
-            showInfo("Game Over!", gameState.getStatus().toString().replace("_", " ") + "!");
+            showInfo("Game Over!", gameState.getStatus().equals(State.Status.PLAYER_1_WINS) ? p1Name + " wins!" : p2Name + " wins!");
         }
     }
 
@@ -276,6 +286,8 @@ public class PebbleSweepController {
      * Updates the styling of the player labels to visually indicate whose turn it is.
      */
     private void setPlayerLabel() {
+        player1Label.setText(p1Name);
+        player2Label.setText(p2Name);
         if (gameState.getNextPlayer() == State.Player.PLAYER_1) {
             player1Label.setStyle(CURRENT_PLAYER_STYLE);
             player2Label.setStyle(OTHER_PLAYER_STYLE);
@@ -401,5 +413,17 @@ public class PebbleSweepController {
                 }
             }
         }
+    }
+
+    /**
+     * Sets player names based on the provided names.
+     *
+     * @param p1 the name of player 1
+     * @param p2 the name of player 2
+     */
+    public void setPlayerNames(String p1, String p2) {
+        this.p1Name = p1;
+        this.p2Name = p2;
+        setPlayerLabel();
     }
 }

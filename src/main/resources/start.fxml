@@ -16,6 +16,9 @@
             </VBox.margin>
         </Label>
 
+        <TextField fx:id="player1Name" maxWidth="250.0" promptText="Enter Player 1 name" />
+        <TextField fx:id="player2Name" maxWidth="250.0" promptText="Enter Player 2 name" />
+
         <Button mnemonicParsing="false" onAction="#startTwoPlayer" prefHeight="50.0" prefWidth="250.0" style="-fx-font-size: 18px; -fx-background-color: #ADD8E6; -fx-background-radius: 10px;" text="Two players" />
 
         <Button disable="true" mnemonicParsing="false" onAction="#startSinglePlayer" prefHeight="50.0" prefWidth="250.0" style="-fx-font-size: 18px; -fx-background-color: #e0e0e0; -fx-background-radius: 10px;" text="Singleplayer (Bot)" />
