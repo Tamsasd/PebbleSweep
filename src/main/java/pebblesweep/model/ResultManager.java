@@ -13,11 +13,18 @@ import java.util.List;
  * Manages IO operations of the game results to and from a JSON file.
  */
 public class ResultManager {
+    /**
+     * The path to the JSON file where results are stored.
+     */
     private static final String FILE_PATH = "results.json";
+
+    /**
+     * The Jackson ObjectMapper used for JSON serialization and deserialization.
+     */
     private static final ObjectMapper mapper = new ObjectMapper();
 
     /**
-     * Loads the list of game results from the JSON file
+     * Loads the list of game results from the JSON file.
      *
      * @return a list of {@link GameResult} objects, or and empty list if the file does not exist.
      */
@@ -35,7 +42,7 @@ public class ResultManager {
     }
 
     /**
-     * Adds a new result to the JSON file
+     * Adds a new result to the JSON file.
      *
      * @param result the {@link GameResult} to be saved.
      */

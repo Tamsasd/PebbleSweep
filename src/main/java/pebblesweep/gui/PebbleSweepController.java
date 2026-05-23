@@ -25,26 +25,67 @@ import java.util.Objects;
  */
 public class PebbleSweepController {
 
+    /**
+     * The grid pane representing the game board UI.
+     */
     @FXML
     private GridPane boardGrid;
 
+    /**
+     * The label indicating Player 1.
+     */
     @FXML
     private Label player1Label;
 
+    /**
+     * The label indicating Player 2.
+     */
     @FXML
     private Label player2Label;
 
+    /**
+     * The current game state model.
+     */
     private PebbleSweepState gameState;
 
+    /**
+     * The starting position of the current move.
+     */
     private Position startPos = null;
 
+    /**
+     * The visual representation of the board cells.
+     */
     private StackPane[][] cells = new StackPane[4][4];
+
+    /**
+     * The image used to display the pebbles.
+     */
     private Image pebbleImage;
 
+    /**
+     * The default style for an empty cell.
+     */
     private final String DEFAULT_STYLE = "-fx-background-color: transparent";
+
+    /**
+     * The style for a highlighted cell during hover.
+     */
     private final String HIGHLIGHT_STYLE = "-fx-background-color: #E0E0E0";
+
+    /**
+     * The style for the selected starting position.
+     */
     private final String STARTPOINT_HIGHLIGHT_STYLE = "-fx-background-color: green";
+
+    /**
+     * The style for the active player's label.
+     */
     private final String CURRENT_PLAYER_STYLE = "-fx-background-color: #ADD8E6; -fx-padding: 10px; -fx-background-radius: 5px;";
+
+    /**
+     * The style for the inactive player's label.
+     */
     private final String OTHER_PLAYER_STYLE = "-fx-background-color: transparent; -fx-padding: 10px;";
 
     /**
@@ -122,7 +163,7 @@ public class PebbleSweepController {
     }
 
     /**
-     * Draws all pebbles on the board by iterating through all grid cells
+     * Draws all pebbles on the board by iterating through all grid cells.
      */
     private void drawPebbles() {
         for (int row = 0; row < 4; row++) {
@@ -134,7 +175,7 @@ public class PebbleSweepController {
 
     /**
      * Draws a single pebble image in a specific cell, if the game
-     * model indicates that the position specified contains a pebble
+     * model indicates that the position specified contains a pebble.
      *
      * @param row the row index of the cell
      * @param col the column index of the cell
@@ -174,7 +215,7 @@ public class PebbleSweepController {
     }
 
     /**
-     * Sets the starting position for a two-phase move and updates the corresponding UI highlights
+     * Sets the starting position for a two-phase move and updates the corresponding UI highlights.
      *
      * @param pos the starting position selected by the player
      */
@@ -185,7 +226,7 @@ public class PebbleSweepController {
     }
 
     /**
-     * Attempts to execute a move ending at the specified position
+     * Attempts to execute a move ending at the specified position.
      * Updates the UI if the move is valid.
      * Shows and error dialog, if the move is invalid.
      *
@@ -208,7 +249,7 @@ public class PebbleSweepController {
     }
 
     /**
-     * Syncronizes the GUI with the current game state
+     * Syncronizes the GUI with the current game state.
      */
     private void updateUI() {
         drawPebbles();
@@ -232,7 +273,7 @@ public class PebbleSweepController {
     }
 
     /**
-     * Updates the styling of the player labels to visually indicate whose turn it is
+     * Updates the styling of the player labels to visually indicate whose turn it is.
      */
     private void setPlayerLabel() {
         if (gameState.getNextPlayer() == State.Player.PLAYER_1) {
@@ -245,7 +286,7 @@ public class PebbleSweepController {
     }
 
     /**
-     * Displays a blocking error alert dialog
+     * Displays a blocking error alert dialog.
      *
      * @param title the title of the alert window
      * @param message the detailed error message
@@ -259,7 +300,7 @@ public class PebbleSweepController {
     }
 
     /**
-     * Displays a blocking informational alert dialog
+     * Displays a blocking informational alert dialog.
      *
      * @param title the title of the alert window
      * @param message the detailed informational message
@@ -274,7 +315,7 @@ public class PebbleSweepController {
 
     /**
      * Cancels the currently selected start position and resets
-     * the cell highlights
+     * the cell highlights.
      */
     private void cancelSelection() {
         if (startPos != null) {
@@ -286,7 +327,7 @@ public class PebbleSweepController {
 
     /**
      * Sets the background coloring of all cells to reflect the current
-     * selection state and mouse hover position
+     * selection state and mouse hover position.
      *
      * @param hoverPos the position currently being hovered over. {@code null}, if outside the board
      */
@@ -317,7 +358,7 @@ public class PebbleSweepController {
     }
 
     /**
-     * Highlights the currently selected starting position, if exists
+     * Highlights the currently selected starting position, if exists.
      */
     private void setStartpointBackground() {
         if (startPos != null) {
@@ -327,7 +368,7 @@ public class PebbleSweepController {
 
     /**
      * Applies a hover highlight to the specified position, if it
-     * contains a pebble
+     * contains a pebble.
      *
      * @param hoverPos the position to highlight
      */
@@ -339,7 +380,7 @@ public class PebbleSweepController {
 
     /**
      * Highlights the valid straight-line path between the start and
-     * currently hovered positions
+     * currently hovered positions.
      *
      * @param hoverPos the endpoint of the potential path being hovered
      */

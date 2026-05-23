@@ -4,7 +4,14 @@ package pebblesweep.model;
  * Represents the result of a finished game.
  */
 public class GameResult {
+    /**
+     * The name of the winning player.
+     */
     private String winner;
+
+    /**
+     * The date and time when the game was finished.
+     */
     private String date;
 
     /**
@@ -13,7 +20,7 @@ public class GameResult {
     public GameResult() {}
 
     /**
-     * Creates a new GameResult
+     * Creates a new GameResult.
      *
      * @param winner the name of the winning player
      * @param date the date and time the game was finished

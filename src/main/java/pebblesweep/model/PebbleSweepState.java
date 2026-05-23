@@ -16,8 +16,14 @@ import static java.lang.Math.abs;
  */
 public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweepState> {
 
+    /**
+     * The player whose turn it is.
+     */
     private Player player;
 
+    /**
+     * The 2D array representing the pebbles on the board.
+     */
     private boolean[][] board = {
             {true, true, true, true},
             {true, true, true, true},
@@ -25,7 +31,14 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
             {true, true, true, true}
     };
 
+    /**
+     * The number of rows on the board.
+     */
     private int numberOfRows = board.length;
+
+    /**
+     * The number of columns on the board.
+     */
     private int numberOfColumns = board[0].length;
 
     /**
@@ -72,7 +85,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
 
     /**
      * {@return whether it is possible to make a move from the position
-     * specified}
+     * specified}.
      *
      * @param from represents where to move from
      */
@@ -82,7 +95,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     }
 
     /**
-     * {@return the player who moves next}
+     * {@return the player who moves next.}
      */
     @Override
     public Player getNextPlayer() {
@@ -90,7 +103,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     }
 
     /**
-     * {@return whether the game is over, by checking if there's any pebbles left to sweep}
+     * {@return whether the game is over, by checking if there's any pebbles left to sweep.}
      */
     @Override
     public boolean isGameOver() {
@@ -103,7 +116,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     }
 
     /**
-     * {@return the status of the game}
+     * {@return the status of the game.}
      *
      * Draw status is not possible.
      */
@@ -116,7 +129,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     }
 
     /**
-     * {@return whether the player specified has won the game}
+     * {@return whether the player specified has won the game.}
      *
      * @param player the player to be tested for win
      */
@@ -127,7 +140,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     }
 
     /**
-     * {@return whether the two endpoints are in the same column}
+     * {@return whether the two endpoints are in the same column.}
      *
      * @param move the move specified by a starting and ending position
      */
@@ -136,7 +149,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     }
 
     /**
-     * {@return whether the two endpoints are in the same row}
+     * {@return whether the two endpoints are in the same row.}
      *
      * @param move the move specified by a starting and ending position
      */
@@ -146,7 +159,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     }
 
     /**
-     * {@return whether the row or column of the move has any spaces in between the endpoints}
+     * {@return whether the row or column of the move has any spaces in between the endpoints.}
      * This method should be called if and only if {@link #isInSameColumn(TwoPhaseMove)} or
      * {@link #isInSameRow(TwoPhaseMove)} returns {@code true}.
      *
@@ -167,7 +180,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     }
 
     /**
-     * {@return whether the row or column of the move has any spaces in between the endpoints}
+     * {@return whether the row or column of the move has any spaces in between the endpoints.}
      * This method should be called if and only if {@link #isInSameColumn(TwoPhaseMove)} or
      * {@link #isInSameRow(TwoPhaseMove)} returns {@code true}.
      *
@@ -198,7 +211,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     }
 
     /**
-     * {@return whether the move provided can be applied to the state}
+     * {@return whether the move provided can be applied to the state.}
      *
      * @param move represents the move to be made
      */
@@ -302,7 +315,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     }
 
     /**
-     * {@return the set of all moves that can be applied to the state}
+     * {@return the set of all moves that can be applied to the state.}
      */
     @Override
     public Set<TwoPhaseMove<Position>> getLegalMoves() {
@@ -320,7 +333,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     }
 
     /**
-     * {@return a deep copy of this state}
+     * {@return a deep copy of this state.}
      */
     @Override
     public PebbleSweepState copy() {
@@ -342,7 +355,7 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     }
 
     /**
-     * {@return the hash code value for this state}
+     * {@return the hash code value for this state.}
      */
     @Override
     public int hashCode() {
