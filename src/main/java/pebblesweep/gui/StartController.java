@@ -1,5 +1,6 @@
 package pebblesweep.gui;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -33,6 +34,17 @@ public class StartController {
      * The name of Player 2.
      */
     @FXML private TextField player2Name;
+
+    /**
+     * Initializes the startController class. This method is automatically called
+     * after the FXML file has been loaded.
+     */
+    @FXML
+    public void initialize() {
+        Platform.runLater(() -> {
+            player1Name.getParent().requestFocus();
+        });
+    }
 
     /**
      * Handles the action event triggered by clicking the two player button.
