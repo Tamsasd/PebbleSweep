@@ -29,6 +29,5 @@ public class ConsoleMainTest {
         assertThrows(NullPointerException.class, () -> ConsoleMain.parseMove(null));
         assertThrows(IllegalArgumentException.class, () -> ConsoleMain.parseMove("10 2"));
         assertThrows(IllegalArgumentException.class, () -> ConsoleMain.parseMove("6 7"));
-
     }
 }
