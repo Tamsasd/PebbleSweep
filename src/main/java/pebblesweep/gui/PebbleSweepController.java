@@ -120,12 +120,16 @@ public class PebbleSweepController {
             return;
         }
 
-        if (startPos == null && gameState.isLegalToMoveFrom(clickedPos)) {
-            setStartPosition(clickedPos);
+        if (gameState.isLegalToMoveFrom(clickedPos))
+        {
+            if (startPos == null) {
+                setStartPosition(clickedPos);
+            }
+            else {
+                setEndPosition(clickedPos);
+            }
         }
-        else {
-            setEndPosition(clickedPos);
-        }
+
     }
 
     private void setStartPosition(Position pos) {
@@ -225,7 +229,9 @@ public class PebbleSweepController {
     }
 
     private void setHoverBackground(Position hoverPos) {
-        cells[hoverPos.row()][hoverPos.column()].setStyle(HIGHLIGHT_STYLE);
+        if (gameState.isLegalToMoveFrom(hoverPos)) {
+            cells[hoverPos.row()][hoverPos.column()].setStyle(HIGHLIGHT_STYLE);
+        }
     }
 
     private void setPathBackground(Position hoverPos) {
