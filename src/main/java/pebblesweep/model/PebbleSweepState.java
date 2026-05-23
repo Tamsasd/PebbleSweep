@@ -370,6 +370,12 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
         return sb.toString();
     }
 
+    /**
+     * Formats a move variable into an easier-to-read format.
+     *
+     * @param move the variable to be formatted
+     * @return a formatted string of the move
+     */
     public String moveToString(TwoPhaseMove<Position> move) {
         StringBuilder sb = new StringBuilder();
         sb.append("(").append(move.from().row()).append(", ").append(move.from().column()).append(")");
