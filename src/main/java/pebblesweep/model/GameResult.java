@@ -23,18 +23,38 @@ public class GameResult {
         this.date = date;
     }
 
+    /**
+     * Retrieves the name of the winning player.
+     *
+     * @return the winner's name
+     */
     public String getWinner() {
         return winner;
     }
 
+    /**
+     * Sets the name of the winning player.
+     *
+     * @param winner the winner's name to set
+     */
     public void setWinner(String winner) {
         this.winner = winner;
     }
 
+    /**
+     * Retrieves the date and time when the game was completed.
+     *
+     * @return the date string
+     */
     public String getDate() {
         return date;
     }
 
+    /**
+     * Sets the date and time for the game result.
+     *
+     * @param date the date string to set
+     */
     public void setDate(String date) {
         this.date = date;
     }
