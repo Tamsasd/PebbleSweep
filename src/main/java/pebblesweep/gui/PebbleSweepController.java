@@ -17,8 +17,6 @@ import pebblesweep.model.Position;
 import java.util.Objects;
 
 public class PebbleSweepController {
-    @FXML
-    private Label statusLabel;
 
     @FXML
     private GridPane boardGrid;
@@ -55,11 +53,11 @@ public class PebbleSweepController {
     private void loadPebbleImage() {
         try {
             pebbleImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/pebble.gif")));
+            Logger.info("Pebble image loaded into memory.");
         }
         catch (Exception e) {
             Logger.error("Pebble image not found in resources folder.");
         }
-        Logger.info("Pebble image loaded into memory.");
     }
 
     private void setupBoard() {
@@ -157,12 +155,14 @@ public class PebbleSweepController {
     private void updateUI() {
         drawPebbles();
         updateBackgrounds(null);
-        setStatusLabel();
         setPlayerLabel();
+        checkGameOver();
     }
 
-    private void setStatusLabel() {
-        statusLabel.setText(gameState.getStatus().toString());
+    private void checkGameOver() {
+        if (gameState.isGameOver()) {
+            showInfo("Game Over!", gameState.getStatus().toString().replace("_", " ") + "!");
+        }
     }
 
     private void setPlayerLabel() {
