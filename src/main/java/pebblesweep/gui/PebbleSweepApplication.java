@@ -22,7 +22,7 @@ public class PebbleSweepApplication extends Application {
      */
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/game.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/start.fxml"));
         stage.setTitle("Pebble Sweep Game");
         stage.setScene(new Scene(root));
         stage.setResizable(false);
