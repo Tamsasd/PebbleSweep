@@ -5,6 +5,8 @@ import game.State;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -12,6 +14,8 @@ import javafx.scene.shape.Circle;
 import org.tinylog.Logger;
 import pebblesweep.model.PebbleSweepState;
 import pebblesweep.model.Position;
+
+import java.util.Objects;
 
 public class PebbleSweepController {
     @FXML
@@ -30,10 +34,21 @@ public class PebbleSweepController {
 
     private Position startPos = null;
 
+    private StackPane[][] cells = new StackPane[4][4];
+    private Image pebbleImage;
+
     @FXML
     public void initialize() {
         Logger.info("Initializing PebbleSweepController");
         this.gameState = new PebbleSweepState();
+
+        try {
+            pebbleImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/pebble.gif")));
+        }
+        catch (Exception e) {
+            Logger.error("Pebble image not found in resources folder.");
+        }
+
         drawBoard();
     }
 
@@ -48,10 +63,10 @@ public class PebbleSweepController {
                 StackPane cell = new StackPane();
 
                 if (gameState.isLegalToMoveFrom(currentPos)) {
-                    Circle pebble = new Circle(35);
-                    pebble.setFill(Color.DARKGRAY);
-
-                    cell.getChildren().add(pebble);
+                    ImageView pebbleView = new ImageView(pebbleImage);
+                    pebbleView.setPreserveRatio(true);
+                    pebbleView.setFitHeight(70);
+                    cell.getChildren().add(pebbleView);
                 }
 
                 cell.setOnMouseClicked(e -> handleCellClick(currentPos));
@@ -84,8 +99,6 @@ public class PebbleSweepController {
                 drawBoard();
                 showError("Illegal move.","The selected move does not comply with the rules.");
             }
-
-
         }
     }
 
