@@ -5,11 +5,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import org.tinylog.Logger;
 
 import javafx.event.ActionEvent;
+import pebblesweep.model.GameResult;
+import pebblesweep.model.ResultManager;
+
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -48,5 +53,28 @@ public class StartController {
     @FXML
     public void startSinglePlayer(ActionEvent event) {
         Logger.info("Single player mode is not yet implemented.");
+    }
+
+    @FXML
+    public void showLeaderboard(ActionEvent event) {
+        Logger.info("Opening leaderboard...");
+        List<GameResult> results = ResultManager.loadResults();
+
+        StringBuilder sb = new StringBuilder();
+        if (results.isEmpty()) {
+            sb.append("No games played yet.");
+        } else {
+            for (int i = 0; i < results.size(); i++) {
+                GameResult r = results.get(i);
+                sb.append(i + 1).append(". ").append(r.getWinner())
+                        .append(" (").append(r.getDate()).append(")\n");
+            }
+        }
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Leaderboard");
+        alert.setHeaderText("Past Game Results");
+        alert.setContentText(sb.toString());
+        alert.showAndWait();
     }
 }
