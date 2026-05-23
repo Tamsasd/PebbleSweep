@@ -16,6 +16,9 @@ import pebblesweep.model.Position;
 
 import java.util.Objects;
 
+/**
+ * Controller class for the Pebble Sweep game GUI.
+ */
 public class PebbleSweepController {
 
     @FXML
@@ -40,6 +43,11 @@ public class PebbleSweepController {
     private final String CURRENT_PLAYER_STYLE = "-fx-background-color: #ADD8E6; -fx-padding: 10px; -fx-background-radius: 5px;";
     private final String OTHER_PLAYER_STYLE = "-fx-background-color: transparent; -fx-padding: 10px;";
 
+    /**
+     * Initializes the controller class. This method is automatically called
+     * after the FXML file has been loaded. Sets up the initial game state,
+     * loads resources and draws the initial board.
+     */
     @FXML
     public void initialize() {
         Logger.info("Initializing PebbleSweepController");
@@ -50,6 +58,10 @@ public class PebbleSweepController {
         updateUI();
     }
 
+    /**
+     * Loads the pebble image from the application resources.
+     * Logs an error if the image file cannot be found.
+     */
     private void loadPebbleImage() {
         try {
             pebbleImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/pebble.gif")));
@@ -60,6 +72,10 @@ public class PebbleSweepController {
         }
     }
 
+    /**
+     * Prepares the GridPane by creating and adding interactive cells.
+     * Clears any existing children before generating the new 4x4 grid.
+     */
     private void setupBoard() {
         Logger.info("Setting up board.");
         boardGrid.getChildren().clear();
@@ -75,6 +91,13 @@ public class PebbleSweepController {
         }
     }
 
+    /**
+     * Creates a single interactive cell for the game board, and
+     * binds mouse click and hover events to it.
+     *
+     * @param pos the logical position of the cell on the board
+     * @return the configured StackPane cell
+     */
     private StackPane createCell(Position pos) {
         StackPane cell = new StackPane();
 
@@ -94,6 +117,9 @@ public class PebbleSweepController {
         return cell;
     }
 
+    /**
+     * Draws all pebbles on the board by iterating through all grid cells
+     */
     private void drawPebbles() {
         for (int row = 0; row < 4; row++) {
             for (int col = 0; col < 4; col++) {
@@ -102,6 +128,13 @@ public class PebbleSweepController {
         }
     }
 
+    /**
+     * Draws a single pebble image in a specific cell, if the game
+     * model indicates that the position specified contains a pebble
+     *
+     * @param row the row index of the cell
+     * @param col the column index of the cell
+     */
     private void drawPebble(int row, int col) {
         cells[row][col].getChildren().clear();
 
@@ -113,6 +146,12 @@ public class PebbleSweepController {
         }
     }
 
+    /**
+     * Handles primary mouse clicks on a board cell.
+     * Detemines whether to start a new move or complete an ongoing move.
+     *
+     * @param clickedPos the logical position of the clicked cell
+     */
     private void handleCellClick(Position clickedPos) {
         if (gameState.isGameOver()) {
             return;
@@ -130,12 +169,24 @@ public class PebbleSweepController {
 
     }
 
+    /**
+     * Sets the starting position for a two-phase move and updates the corresponding UI highlights
+     *
+     * @param pos the starting position selected by the player
+     */
     private void setStartPosition(Position pos) {
         startPos = pos;
         Logger.debug("Starting endpoint: {}", startPos);
         updateBackgrounds(startPos);
     }
 
+    /**
+     * Attempts to execute a move ending at the specified position
+     * Updates the UI if the move is valid.
+     * Shows and error dialog, if the move is invalid.
+     *
+     * @param pos the target end position for the move
+     */
     private void setEndPosition(Position pos) {
         TwoPhaseMoveState.TwoPhaseMove<Position> move = new TwoPhaseMoveState.TwoPhaseMove<>(startPos, pos);
 
@@ -152,6 +203,9 @@ public class PebbleSweepController {
         }
     }
 
+    /**
+     * Syncronizes the GUI with the current game state
+     */
     private void updateUI() {
         drawPebbles();
         updateBackgrounds(null);
@@ -159,12 +213,19 @@ public class PebbleSweepController {
         checkGameOver();
     }
 
+    /**
+     * Checks for a game over condition.
+     * If the game is over, shows a game over dialog
+     */
     private void checkGameOver() {
         if (gameState.isGameOver()) {
             showInfo("Game Over!", gameState.getStatus().toString().replace("_", " ") + "!");
         }
     }
 
+    /**
+     * Updates the styling of the player labels to visually indicate whose turn it is
+     */
     private void setPlayerLabel() {
         if (gameState.getNextPlayer() == State.Player.PLAYER_1) {
             player1Label.setStyle(CURRENT_PLAYER_STYLE);
@@ -175,6 +236,12 @@ public class PebbleSweepController {
         }
     }
 
+    /**
+     * Displays a blocking error alert dialog
+     *
+     * @param title the title of the alert window
+     * @param message the detailed error message
+     */
     private void showError(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -183,6 +250,12 @@ public class PebbleSweepController {
         alert.showAndWait();
     }
 
+    /**
+     * Displays a blocking informational alert dialog
+     *
+     * @param title the title of the alert window
+     * @param message the detailed informational message
+     */
     private void showInfo(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -191,6 +264,10 @@ public class PebbleSweepController {
         alert.showAndWait();
     }
 
+    /**
+     * Cancels the currently selected start position and resets
+     * the cell highlights
+     */
     private void cancelSelection() {
         if (startPos != null) {
             Logger.debug("Selection cancelled.");
@@ -199,6 +276,12 @@ public class PebbleSweepController {
         }
     }
 
+    /**
+     * Sets the background coloring of all cells to reflect the current
+     * selection state and mouse hover position
+     *
+     * @param hoverPos the position currently being hovered over. {@code null}, if outside the board
+     */
     private void updateBackgrounds(Position hoverPos) {
         resetBackgrounds();
 
@@ -214,6 +297,9 @@ public class PebbleSweepController {
         }
     }
 
+    /**
+     * Clears all highlighting by applying the default style to every cell.
+     */
     private void resetBackgrounds() {
         for (int row = 0; row < 4; row++) {
             for (int col = 0; col < 4; col++) {
@@ -222,18 +308,33 @@ public class PebbleSweepController {
         }
     }
 
+    /**
+     * Highlights the currently selected starting position, if exists
+     */
     private void setStartpointBackground() {
         if (startPos != null) {
             cells[startPos.row()][startPos.column()].setStyle(STARTPOINT_HIGHLIGHT_STYLE);
         }
     }
 
+    /**
+     * Applies a hover highlight to the specified position, if it
+     * contains a pebble
+     *
+     * @param hoverPos the position to highlight
+     */
     private void setHoverBackground(Position hoverPos) {
         if (gameState.isLegalToMoveFrom(hoverPos)) {
             cells[hoverPos.row()][hoverPos.column()].setStyle(HIGHLIGHT_STYLE);
         }
     }
 
+    /**
+     * Highlights the valid straight-line path between the start and
+     * currently hovered positions
+     *
+     * @param hoverPos the endpoint of the potential path being hovered
+     */
     private void setPathBackground(Position hoverPos) {
         TwoPhaseMoveState.TwoPhaseMove<Position> potentialMove = new TwoPhaseMoveState.TwoPhaseMove<>(startPos, hoverPos);
 
