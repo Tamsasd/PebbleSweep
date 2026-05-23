@@ -11,9 +11,13 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import org.tinylog.Logger;
+import pebblesweep.model.GameResult;
 import pebblesweep.model.PebbleSweepState;
 import pebblesweep.model.Position;
+import pebblesweep.model.ResultManager;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 /**
@@ -215,10 +219,14 @@ public class PebbleSweepController {
 
     /**
      * Checks for a game over condition.
-     * If the game is over, shows a game over dialog
+     * If the game is over, shows a game over dialog and saves the results to a JSON file.
      */
     private void checkGameOver() {
         if (gameState.isGameOver()) {
+            String winner = gameState.isWinner(State.Player.PLAYER_1) ? "PLAYER_1" : "PLAYER_2";
+            String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            ResultManager.saveResult(new GameResult(winner, date));
+
             showInfo("Game Over!", gameState.getStatus().toString().replace("_", " ") + "!");
         }
     }
