@@ -10,8 +10,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import org.tinylog.Logger;
 import pebblesweep.model.PebbleSweepState;
 import pebblesweep.model.Position;
@@ -38,20 +36,30 @@ public class PebbleSweepController {
     private StackPane[][] cells = new StackPane[4][4];
     private Image pebbleImage;
 
+    private final String DEFAULT_STYLE = "-fx-background-color: transparent";
+    private final String HIGHLIGHT_STYLE = "-fx-background-color: #E0E0E0";
+    private final String STARTPOINT_HIGHLIGHT_STYLE = "-fx-background-color: green";
+    private final String CURRENT_PLAYER_STYLE = "-fx-background-color: #ADD8E6; -fx-padding: 10px; -fx-background-radius: 5px;";
+    private final String OTHER_PLAYER_STYLE = "-fx-background-color: transparent; -fx-padding: 10px;";
+
     @FXML
     public void initialize() {
         Logger.info("Initializing PebbleSweepController");
         this.gameState = new PebbleSweepState();
 
+        loadPebbleImage();
+        setupBoard();
+        updateUI();
+    }
+
+    private void loadPebbleImage() {
         try {
             pebbleImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/pebble.gif")));
         }
         catch (Exception e) {
             Logger.error("Pebble image not found in resources folder.");
         }
-
-        setupBoard();
-        updateUI();
+        Logger.info("Pebble image loaded into memory.");
     }
 
     private void setupBoard() {
@@ -85,16 +93,19 @@ public class PebbleSweepController {
     private void drawPebbles() {
         for (int row = 0; row < 4; row++) {
             for (int col = 0; col < 4; col++) {
-                Position currentPos = new Position(row, col);
-                cells[row][col].getChildren().clear();
-
-                if (gameState.isLegalToMoveFrom(currentPos)) {
-                    ImageView pebbleView = new ImageView(pebbleImage);
-                    pebbleView.setPreserveRatio(true);
-                    pebbleView.setFitHeight(70);
-                    cells[row][col].getChildren().add(pebbleView);
-                }
+                drawPebble(row, col);
             }
+        }
+    }
+
+    private void drawPebble(int row, int col) {
+        cells[row][col].getChildren().clear();
+
+        if (gameState.isLegalToMoveFrom(new Position(row, col))) {
+            ImageView pebbleView = new ImageView(pebbleImage);
+            pebbleView.setPreserveRatio(true);
+            pebbleView.setFitHeight(70);
+            cells[row][col].getChildren().add(pebbleView);
         }
     }
 
@@ -128,16 +139,21 @@ public class PebbleSweepController {
     private void updateUI() {
         drawPebbles();
         updateBackgrounds(null);
+        setStatusLabel();
+        setPlayerLabel();
+    }
 
-        State.Status status = gameState.getStatus();
-        statusLabel.setText(status.toString());
+    private void setStatusLabel() {
+        statusLabel.setText(gameState.getStatus().toString());
+    }
 
+    private void setPlayerLabel() {
         if (gameState.getNextPlayer() == State.Player.PLAYER_1) {
-            player1Label.setStyle("-fx-background-color: #ADD8E6; -fx-padding: 10px; -fx-background-radius: 5px;");
-            player2Label.setStyle("-fx-background-color: transparent; -fx-padding: 10px;");
+            player1Label.setStyle(CURRENT_PLAYER_STYLE);
+            player2Label.setStyle(OTHER_PLAYER_STYLE);
         } else {
-            player1Label.setStyle("-fx-background-color: transparent; -fx-padding: 10px;");
-            player2Label.setStyle("-fx-background-color: #ADD8E6; -fx-padding: 10px; -fx-background-radius: 5px;");
+            player1Label.setStyle(OTHER_PLAYER_STYLE);
+            player2Label.setStyle(CURRENT_PLAYER_STYLE);
         }
     }
 
@@ -168,10 +184,10 @@ public class PebbleSweepController {
     private void updateBackgrounds(Position hoverPos) {
         for (int row = 0; row < 4; row++) {
             for (int col = 0; col < 4; col++) {
-                cells[row][col].setStyle("-fx-background-color: transparent");
+                cells[row][col].setStyle(DEFAULT_STYLE);
 
                 if (startPos != null && startPos.row() == row && startPos.column() == col) {
-                    cells[row][col].setStyle("-fx-background-color: green");
+                    cells[row][col].setStyle(STARTPOINT_HIGHLIGHT_STYLE);
                 }
             }
         }
@@ -179,7 +195,7 @@ public class PebbleSweepController {
         if (hoverPos == null || gameState.isGameOver()) return;
 
         if (startPos == null) {
-            cells[hoverPos.row()][hoverPos.column()].setStyle("-fx-background-color: #E0E0E0");
+            cells[hoverPos.row()][hoverPos.column()].setStyle(HIGHLIGHT_STYLE);
         }
         else {
             TwoPhaseMoveState.TwoPhaseMove<Position> potentialMove = new TwoPhaseMoveState.TwoPhaseMove<>(startPos, hoverPos);
@@ -193,7 +209,7 @@ public class PebbleSweepController {
                 for (int row = startRow; row <= endRow; row++) {
                     for (int col = startCol; col <= endCol; col++) {
                         if (!(row == startPos.row() && col == startPos.column())) {
-                            cells[row][col].setStyle("-fx-background-color: #FFFACD;");
+                            cells[row][col].setStyle(HIGHLIGHT_STYLE);
                         }
                     }
                 }
