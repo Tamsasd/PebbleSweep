@@ -32,8 +32,7 @@ public class ConsoleMain {
 
         if (state.isGameOver()) {
             String winner = state.isWinner(State.Player.PLAYER_1) ? "PLAYER_1" : "PLAYER_2";
-            String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            ResultManager.saveResult(new GameResult(winner, date));
+            ResultManager.saveResult(new GameResult(winner, LocalDateTime.now()));
         }
     }
 

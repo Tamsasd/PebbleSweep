@@ -21,7 +21,8 @@ public class ResultManager {
     /**
      * The Jackson {@link ObjectMapper} used for JSON serialization and deserialization.
      */
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper mapper = new ObjectMapper()
+            .registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule());;
 
     /**
      * Loads the {@link List} of game results from the JSON file.

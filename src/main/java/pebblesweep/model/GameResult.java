@@ -1,5 +1,7 @@
 package pebblesweep.model;
 
+import java.time.LocalDateTime;
+
 /**
  * Represents the result of a finished game.
  */
@@ -12,7 +14,7 @@ public class GameResult {
     /**
      * The {@code date} and time when the game was finished.
      */
-    private String date;
+    private LocalDateTime date;
 
     /**
      * Default constructor required by Jackson.
@@ -25,7 +27,7 @@ public class GameResult {
      * @param winner the name of the winning player
      * @param date the {@code date} and time the game was finished
      */
-    public GameResult(String winner, String date) {
+    public GameResult(String winner, LocalDateTime date) {
         this.winner = winner;
         this.date = date;
     }
@@ -53,7 +55,7 @@ public class GameResult {
      *
      * @return the date string
      */
-    public String getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
@@ -62,7 +64,7 @@ public class GameResult {
      *
      * @param date the date string to set
      */
-    public void setDate(String date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 }

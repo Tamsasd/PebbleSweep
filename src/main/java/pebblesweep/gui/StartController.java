@@ -16,6 +16,7 @@ import pebblesweep.model.GameResult;
 import pebblesweep.model.ResultManager;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 
@@ -123,7 +124,7 @@ public class StartController {
             for (int i = 0; i < results.size(); i++) {
                 GameResult r = results.get(i);
                 sb.append(i + 1).append(". ").append(r.getWinner())
-                        .append(" (").append(r.getDate()).append(")\n");
+                        .append(" (").append(r.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))).append(")\n");
             }
         }
 
