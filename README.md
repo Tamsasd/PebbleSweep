@@ -74,3 +74,4 @@ _(Explanation: Players take turns sweeping entire rows by selecting the first an
 ## Acknowledgments
 
 -   University of Debrecen, Faculty of Informatics - `homework-project-utils-2026` and `homework-project-jfxutils-2026` libraries.
+- alleycat - [Round White Rock](https://opengameart.org/content/round-white-rock) (`smallrockround_640.png`)

@@ -138,7 +138,7 @@ public class PebbleSweepController {
      */
     private void loadPebbleImage() {
         try {
-            pebbleImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/pebble.gif")));
+            pebbleImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/smallrockround_640.png")));
             Logger.info("Pebble image loaded into memory.");
         }
         catch (Exception e) {
