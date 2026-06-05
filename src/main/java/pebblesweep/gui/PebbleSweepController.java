@@ -18,14 +18,10 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.tinylog.Logger;
-import pebblesweep.model.GameResult;
-import pebblesweep.model.PebbleSweepState;
-import pebblesweep.model.Position;
-import pebblesweep.model.ResultManager;
+import pebblesweep.model.*;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -115,6 +111,11 @@ public class PebbleSweepController {
      * The style for the inactive player's {@link Label}.
      */
     private final String OTHER_PLAYER_STYLE = "-fx-background-color: transparent; -fx-padding: 10px;";
+
+    /**
+     * The strategy used by the computer opponent.
+     */
+    private BotPlayer botStrategy = new RandomBotPlayer();
 
     /**
      * Initializes the controller class. This method is automatically called
@@ -270,7 +271,7 @@ public class PebbleSweepController {
             updateUI();
 
             if (isSinglePlayer && !gameState.isGameOver() && gameState.getNextPlayer() == State.Player.PLAYER_2) {
-                doRandomBotMove();
+                doBotMove();
             }
         }
         catch (IllegalArgumentException e) {
@@ -281,22 +282,34 @@ public class PebbleSweepController {
     }
 
     /**
-     * Executes a random legal move for the Bot after a 1-second delay.
+     * Sets a customized bot strategy implementation.
+     *
+     * @param botStrategy the bot implementation to use
      */
-    private void doRandomBotMove() {
+    public void setBotStrategy(BotPlayer botStrategy) {
+        this.botStrategy = botStrategy;
+    }
+
+    /**
+     * Executes an automated move using the configured {@link BotPlayer} strategy after a 1-second delay.
+     */
+    private void doBotMove() {
         isBotThinking = true;
-        Logger.info("Bot is thinking...");
+        Logger.info("Bot is thinking using strategy: {}", botStrategy.getClass().getSimpleName());
 
         PauseTransition pause = new PauseTransition(Duration.seconds(1));
         pause.setOnFinished(e -> {
-            Set<TwoPhaseMoveState.TwoPhaseMove<Position>> legalMovesSet = gameState.getLegalMoves();
-            List<TwoPhaseMoveState.TwoPhaseMove<Position>> legalMovesList = new ArrayList<>(legalMovesSet);
+            try {
+                TwoPhaseMoveState.TwoPhaseMove<Position> chosenMove =
+                        botStrategy.chooseMove(gameState.getLegalMoves(), gameState);
 
-            TwoPhaseMoveState.TwoPhaseMove<Position> chosenMove = legalMovesList.get(new Random().nextInt(legalMovesList.size()));
-            gameState.makeMove(chosenMove);
-
-            isBotThinking = false;
-            updateUI();
+                gameState.makeMove(chosenMove);
+                updateUI();
+            } catch (Exception ex) {
+                Logger.error(ex, "Error occurred during bot execution.");
+            } finally {
+                isBotThinking = false;
+            }
         });
 
         pause.play();
