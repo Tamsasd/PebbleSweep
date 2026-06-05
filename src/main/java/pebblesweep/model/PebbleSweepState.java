@@ -32,16 +32,6 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     };
 
     /**
-     * The number of rows on the board.
-     */
-    private int numberOfRows = board.length;
-
-    /**
-     * The number of columns on the board.
-     */
-    private int numberOfColumns = board[0].length;
-
-    /**
      * Creates a new, initial state of the Pebble Sweep game.
      * The board is fully populated with pebbles, and {@link Player#PLAYER_1} moves first.
      */
@@ -57,11 +47,9 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
      */
     PebbleSweepState(boolean[][] board, Player player) {
         this.player = player;
-        this.numberOfRows = board.length;
-        this.numberOfColumns = board[0].length;
-        this.board = new boolean[this.numberOfRows][this.numberOfColumns];
+        this.board = new boolean[this.board.length][this.board[0].length];
 
-        for (int i = 0; i < this.numberOfRows; i++) {
+        for (int i = 0; i < this.board.length; i++) {
             this.board[i] = Arrays.copyOf(board[i], board[i].length);
         }
     }
@@ -73,12 +61,10 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
      */
     public PebbleSweepState(PebbleSweepState other) {
         this.player = other.player;
-        this.numberOfColumns = other.numberOfColumns;
-        this.numberOfRows = other.numberOfRows;
 
-        this.board = new boolean[other.numberOfRows][other.numberOfColumns];
+        this.board = new boolean[other.board.length][other.board[0].length];
 
-        for (int i = 0; i < other.numberOfRows; i++) {
+        for (int i = 0; i < other.board.length; i++) {
             this.board[i] = Arrays.copyOf(other.board[i], other.board[i].length);
         }
     }
@@ -109,8 +95,8 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
      */
     @Override
     public boolean isGameOver() {
-        for (int row = 0; row < numberOfRows; row++) {
-            for (int col = 0; col < numberOfColumns; col++) {
+        for (int row = 0; row < board.length; row++) {
+            for (int col = 0; col < board[0].length; col++) {
                 if (board[row][col]) return false;
             }
         }
@@ -276,10 +262,10 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     private Set<TwoPhaseMove<Position>> getLegalMovesInRow(int row) {
         Set<TwoPhaseMove<Position>> legalMoves = new java.util.HashSet<>();
 
-        for (int startCol = 0; startCol < numberOfColumns; startCol++) {
+        for (int startCol = 0; startCol < board[0].length; startCol++) {
             if (!board[row][startCol]) continue;
 
-            for (int endCol = startCol; endCol < numberOfColumns; endCol++) {
+            for (int endCol = startCol; endCol < board[0].length; endCol++) {
                 if (!board[row][endCol]) break;
 
                 Position from = new Position(row, startCol);
@@ -304,10 +290,10 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     private Set<TwoPhaseMove<Position>> getLegalMovesInColumn(int col) {
         Set<TwoPhaseMove<Position>> legalMoves = new java.util.HashSet<>();
 
-        for (int startRow = 0; startRow < numberOfRows; startRow++) {
+        for (int startRow = 0; startRow < board.length; startRow++) {
             if (!board[startRow][col]) continue;
 
-            for (int endRow = startRow; endRow < numberOfRows; endRow++) {
+            for (int endRow = startRow; endRow < board.length; endRow++) {
                 if (!board[endRow][col]) break;
 
                 Position from = new Position(startRow, col);
@@ -330,11 +316,11 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
     public Set<TwoPhaseMove<Position>> getLegalMoves() {
         Set<TwoPhaseMove<Position>> legalMoves = new java.util.HashSet<>();
 
-        for (int row = 0; row < numberOfRows; row++) {
+        for (int row = 0; row < board.length; row++) {
             legalMoves.addAll(getLegalMovesInRow(row));
         }
 
-        for (int col = 0; col < numberOfColumns; col++) {
+        for (int col = 0; col < board[0].length; col++) {
             legalMoves.addAll(getLegalMovesInColumn(col));
         }
 
@@ -382,12 +368,12 @@ public class PebbleSweepState implements TwoPhaseMoveState<Position, PebbleSweep
         StringBuilder sb = new StringBuilder();
         sb.append("    0 1 2 3\n");
         sb.append("___________\n");
-        for (int row = 0; row < numberOfRows; row++) {
+        for (int row = 0; row < board.length; row++) {
             sb.append(row + " | ");
-            for (int col = 0; col < numberOfColumns-1; col++) {
+            for (int col = 0; col < board[0].length-1; col++) {
                 sb.append(board[row][col] ? "O " : ". ");
             }
-            sb.append(board[row][numberOfColumns-1] ? "O\n" : ".\n");
+            sb.append(board[row][board[0].length-1] ? "O\n" : ".\n");
         }
         return sb.toString();
     }
